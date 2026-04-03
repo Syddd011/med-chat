@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Medical Chatbot</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -34,6 +34,50 @@
     <!-- ── Messages ── -->
     <div class="chat-messages" id="chatMessages">
 
+      <!-- User message -->
+      <div class="msg-row user">
+        <div class="msg-avatar user-av">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+          </svg>
+        </div>
+        <div class="msg-group">
+          <div class="bubble">hi</div>
+          <div class="msg-time">15:29</div>
+        </div>
+      </div>
+
+      <!-- Bot message -->
+      <div class="msg-row bot">
+        <div class="msg-avatar bot-av">🩺</div>
+        <div class="msg-group">
+          <div class="bubble">I don't know based on the provided documents.</div>
+          <div class="msg-time">15:29</div>
+        </div>
+      </div>
+
+      <!-- User message -->
+      <div class="msg-row user">
+        <div class="msg-avatar user-av">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+          </svg>
+        </div>
+        <div class="msg-group">
+          <div class="bubble">hi</div>
+          <div class="msg-time">15:43</div>
+        </div>
+      </div>
+
+      <!-- Bot message -->
+      <div class="msg-row bot">
+        <div class="msg-avatar bot-av">🩺</div>
+        <div class="msg-group">
+          <div class="bubble">I don't know based on the provided documents.</div>
+          <div class="msg-time">15:43</div>
+        </div>
+      </div>
+
       <!-- Typing indicator (hidden by default) -->
       <div class="msg-row bot" id="typingRow" style="display:none;">
         <div class="msg-avatar bot-av">🩺</div>
@@ -46,13 +90,6 @@
 
     <!-- ── Input Bar ── -->
     <div class="chat-input-wrap">
-      
-      <!-- Image Preview Container -->
-      <div class="preview-wrap" id="previewWrap">
-        <button class="preview-remove" id="previewRemove" title="Remove image">X</button>
-        <img id="previewImg" src="" alt="preview" />
-      </div>
-
       <div class="chat-input-row">
 
         <!-- Attach -->
@@ -61,7 +98,7 @@
             <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66L9.41 17.41a2 2 0 01-2.83-2.83l8.49-8.48"/>
           </svg>
         </button>
-        <input type="file" id="fileInput" accept="image/*" style="display:none;" />
+        <input type="file" id="fileInput" style="display:none;" />
 
         <!-- Text input -->
         <input
@@ -88,37 +125,8 @@
   <script>
     const messagesEl  = document.getElementById('chatMessages');
     const inputEl     = document.getElementById('chatInput');
-    const fileInput   = document.getElementById('fileInput');
     const sendBtn     = document.getElementById('sendBtn');
     const typingRow   = document.getElementById('typingRow');
-    const previewWrap = document.getElementById('previewWrap');
-    const previewImg  = document.getElementById('previewImg');
-    const previewRemove = document.getElementById('previewRemove');
-
-    let selectedFile = null;
-    let selectedFileDataUrl = null;
-
-    // File selection logic
-    fileInput.addEventListener('change', function(e) {
-      if (e.target.files && e.target.files[0]) {
-        selectedFile = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-          selectedFileDataUrl = evt.target.result;
-          previewImg.src = selectedFileDataUrl;
-          previewWrap.style.display = 'flex';
-        }
-        reader.readAsDataURL(selectedFile);
-      }
-    });
-
-    previewRemove.addEventListener('click', function() {
-      selectedFile = null;
-      selectedFileDataUrl = null;
-      fileInput.value = "";
-      previewWrap.style.display = 'none';
-      previewImg.src = "";
-    });
 
     function getTime() {
       const now = new Date();
@@ -129,7 +137,7 @@
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    function appendMessage(text, role, imageUrl = null) {
+    function appendMessage(text, role) {
       const row = document.createElement('div');
       row.className = `msg-row ${role}`;
 
@@ -141,20 +149,10 @@
            </div>`
         : `<div class="msg-avatar bot-av">🩺</div>`;
 
-      // construct bubble content
-      let bubbleContent = '';
-      if (imageUrl) {
-        bubbleContent += `<img src="${imageUrl}" style="max-height: 120px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--teal-accent); display: block;" />`;
-      }
-      
-      // format text to preserve line breaks
-      const formattedText = text.replace(/\n/g, '<br/>');
-      bubbleContent += `<span>${formattedText}</span>`;
-
       row.innerHTML = `
         ${avatarHTML}
         <div class="msg-group">
-          <div class="bubble">${bubbleContent}</div>
+          <div class="bubble">${text}</div>
           <div class="msg-time">${getTime()}</div>
         </div>
       `;
@@ -168,47 +166,32 @@
       scrollBottom();
     }
 
-    async function botReply(formData) {
+    function botReply(userText) {
       showTyping(true);
-      
-      try {
-        const response = await fetch("/get", {
-          method: "POST",
-          body: formData
-        });
-        const answer = await response.text();
+      setTimeout(() => {
         showTyping(false);
-        appendMessage(answer, 'bot');
-      } catch (error) {
-        showTyping(false);
-        appendMessage("Network error. Please try again.", 'bot');
-        console.error(error);
-      }
+        const lower = userText.toLowerCase();
+        let reply = "I'm here to help with health-related questions. Could you be more specific?";
+        if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey'))
+          reply = "Hello! I'm your AI Health Consultant. How can I assist you today?";
+        else if (lower.includes('fever') || lower.includes('temperature'))
+          reply = "A fever is often a sign your body is fighting an infection. Stay hydrated and rest. If it exceeds 39.4°C (103°F) for more than two days, please consult a doctor.";
+        else if (lower.includes('headache'))
+          reply = "Headaches can have many causes — stress, dehydration, or lack of sleep. Try resting in a quiet dark room and drink water. If severe or recurring, please see a physician.";
+        else if (lower.includes('pain'))
+          reply = "Pain can vary greatly. Could you describe where the pain is and how long you've had it? That will help me give you more relevant information.";
+        else if (lower.includes('thanks') || lower.includes('thank you'))
+          reply = "You're welcome! Stay healthy. Feel free to ask anything anytime. 😊";
+        appendMessage(reply, 'bot');
+      }, 1400);
     }
 
     function sendMessage() {
       const text = inputEl.value.trim();
-      if (!text && !selectedFile) return;
-      
-      // Cache values for UI
-      const imageToRender = selectedFileDataUrl;
-      
-      // Add message to UI
-      appendMessage(text, 'user', imageToRender);
-      
-      // Prepare form data
-      const formData = new FormData();
-      formData.append("msg", text);
-      if (selectedFile) {
-        formData.append("image", selectedFile);
-      }
-
-      // Clear inputs
+      if (!text) return;
+      appendMessage(text, 'user');
       inputEl.value = '';
-      previewRemove.click(); // resets file state
-      
-      // Call backend
-      botReply(formData);
+      botReply(text);
     }
 
     sendBtn.addEventListener('click', sendMessage);
