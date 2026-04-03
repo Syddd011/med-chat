@@ -1,0 +1,44 @@
+# `med-chat` Project Architecture and Analysis
+
+This document provides a detailed breakdown of how the `med-chat` project functions. At its core, the project is a **Retrieval-Augmented Generation (RAG) web application** built to act as a medical chatbot. It utilizes large language models alongside a vector database to provide intelligent, context-aware responses to health-related queries.
+
+Here is a step-by-step technical explanation of the flow and various components:
+
+## 1. Project Initialization & Knowledge Base Ingestion (`store_index.py`)
+Before the chatbot can answer medical questions reliably, it needs medical knowledge. This process is handled by a standalone script, `store_index.py`.
+
+- **PDF Loading**: Retrieves and loads all `.pdf` documents situated in the `data/` folder via `DirectoryLoader` and `PyPDFLoader`.
+- **Text Splitting**: The medical texts are divided into smaller, manageable chunks (500 characters with an overlap of 20) using LangChain's `RecursiveCharacterTextSplitter`. This provides granular blocks of context for the AI.
+- **Embedding Generation**: It invokes a local HuggingFace embedding model (`sentence-transformers/all-MiniLM-L6-v2`) via `src/helper.py`. This maps each text chunk into a continuous 384-dimensional vector space representing its semantic meaning.
+- **Vector Storage**: Finally, it creates an index named `medical-chatbot` in **Pinecone** (a managed vector database) and pushes all chunked embeddings into it securely using `langchain_pinecone`.
+
+## 2. Intent Classification Component (`src/ml/`)
+The project utilizes Machine Learning not only for answering questions but also for **user intent detection** before the question reaches the LLM. 
+
+- Inside `src/ml/intent_classifier.py`, there is logic to utilize a traditional NLP classifier (`LinearSVC` combined with a TF-IDF vectorizer).
+- The models correspond to serialized `joblib` artifacts located in the `models/` directory.
+- `predict_intent(user_input)` classifies the query into predefined intents such as: `general_info`, `symptoms`, `medication_info`, `lifestyle`, `emergency_like`, or `other`.
+
+## 3. Web Server & Application Logic (`app.py`)
+The web application is built on **Flask** and orchestrates the backend logic.
+
+- **Initialization**: Upon booting, it establishes connections to OpenAI and Pinecone by retrieving environment variables from the `.env` file. It then re-initializes the HF Embeddings so it can convert user text into vectors at runtime.
+- **Serving Chat Interface**: At the `"/"` route, it serves the `chat.html` frontend from the `templates` directory.
+- **User Query Handling (`/get` endpoint)**:
+    1. User submits a message from the frontend UI.
+    2. The message is first routed through `predict_intent` to determine *what* the user is really asking (i.e. is it a medical emergency vs. a lifestyle query).
+    3. LangChain retrieves the 3 most contextually relevant document chunks (`k=3`) from Pinecone based on semantic similarity to the user's input vector.
+    4. Both the **User Input** and the **Detected Intent** are passed to the LangChain RAG pipeline.
+
+## 4. LangChain LLM & System Prompt (`src/prompt.py`)
+This is the "Brain" and final step of the lifecycle.
+
+- **System Prompts**: The prompt templates in `src/prompt.py` dynamically utilize the classified `intent`. For example, if the intent is `'emergency_like'`, the system explicitly instructs the GPT model to give a STRONG safety warning, advise seeking immediate in-person medical assistance, and STRICTLY avoid giving a diagnosis.
+- **Response Generation**: `ChatOpenAI` uses the `openai/gpt-3.5-turbo` model (routed via OpenRouter) to read the provided prompt rules + the retrieved medical text chunks + the user query. The AI then synthesizes and returns a safe, medically-grounded answer back to the Flask endpoint.
+
+## 5. Persistence & Logging (`interactions.csv`)
+For auditability and model refinement over time, `app.py` continuously logs every incoming user query alongside the generated LLM response into a local file named `interactions.csv`.
+
+---
+### **Summary Workflow Diagram**
+User Input -> `predict_intent` -> Pinecone Context Retrieval -> System Prompt formatting rules based on Intent -> GPT-3.5 Turbo Synthesis -> Response to User -> Log to CSV

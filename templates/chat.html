@@ -46,15 +46,26 @@
                     </div>
 
                     <!-- Input -->
-                    <div class="card-footer medchat-footer">
+                    <div class="card-footer medchat-footer" style="flex-direction: column;">
+                        <!-- Image Preview -->
+                        <div id="image-preview-container" class="mb-2" style="display:none; position: relative; width: fit-content;">
+                            <img id="image-preview" src="" style="max-height:80px; border-radius:10px; border: 2px solid white;">
+                            <button type="button" id="remove-image-btn" class="btn btn-sm btn-danger" style="position: absolute; top: -10px; right: -10px; border-radius: 50%; padding: 2px 6px;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
                         <form id="messageArea" class="input-group">
+                            <input type="file" id="image-upload" name="image" accept="image/*" style="display:none">
+                            <button type="button" id="upload-btn" class="btn medchat-send-btn attach_btn" style="border-radius: 20px 0 0 20px;">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
                             <input type="text"
                                    id="text"
                                    name="msg"
                                    placeholder="Type your message..."
                                    autocomplete="off"
                                    class="form-control type_msg medchat-input"
-                                   required>
+                                   style="border-radius: 0;">
                             <div class="input-group-append">
                                 <button type="submit"
                                         id="send"
@@ -80,6 +91,33 @@
     <!-- Original chat JS (unchanged logic) -->
     <script>
         $(document).ready(function () {
+            let selectedImageFile = null;
+            let selectedImageDataUrl = null;
+
+            $("#upload-btn").click(function() {
+                $("#image-upload").click();
+            });
+
+            $("#image-upload").change(function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    selectedImageFile = e.target.files[0];
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        selectedImageDataUrl = e.target.result;
+                        $("#image-preview").attr('src', e.target.result);
+                        $("#image-preview-container").show();
+                    }
+                    reader.readAsDataURL(selectedImageFile);
+                }
+            });
+
+            $("#remove-image-btn").click(function() {
+                selectedImageFile = null;
+                selectedImageDataUrl = null;
+                $("#image-upload").val("");
+                $("#image-preview-container").hide();
+            });
+
             $("#messageArea").on("submit", function (event) {
                 event.preventDefault(); // stop form from reloading page
 
@@ -89,14 +127,21 @@
                 const str_time = hour + ":" + minute;
 
                 var rawText = $("#text").val().trim();
-                if (!rawText) {
-                    return; // ignore empty messages
+                
+                // Allow empty text if image is provided
+                if (!rawText && !selectedImageFile) {
+                    return; 
+                }
+
+                var chatContent = rawText;
+                if (selectedImageDataUrl) {
+                    chatContent = '<img src="' + selectedImageDataUrl + '" style="max-width: 150px; border-radius: 10px; margin-bottom: 5px;"><br>' + rawText;
                 }
 
                 var userHtml =
                     '<div class="d-flex justify-content-end mb-4">' +
                         '<div class="msg_cotainer_send">' +
-                            rawText +
+                            chatContent +
                             '<span class="msg_time_send">' + str_time + '</span>' +
                         '</div>' +
                         '<div class="img_cont_msg">' +
@@ -108,14 +153,24 @@
                 $("#text").val("");
                 $("#messageFormeight").append(userHtml);
 
-                // Scroll to bottom so latest message is visible
                 var messages = document.getElementById("messageFormeight");
                 messages.scrollTop = messages.scrollHeight;
 
+                var formData = new FormData();
+                formData.append("msg", rawText);
+                if (selectedImageFile) {
+                    formData.append("image", selectedImageFile);
+                }
+
+                // Clean up the upload UI immediately
+                $("#remove-image-btn").click();
+
                 $.ajax({
-                    data: { msg: rawText },
+                    data: formData,
                     type: "POST",
-                    url: "/get"
+                    url: "/get",
+                    processData: false,
+                    contentType: false
                 }).done(function (data) {
                     var botHtml =
                         '<div class="d-flex justify-content-start mb-4">' +

@@ -1,18 +1,38 @@
-from langchain.document_loaders import PyPDFLoader, DirectoryLoader
+from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from typing import List
-from langchain.schema import Document
+from langchain_core.documents import Document
 
 
-#Extract Data From the PDF File
-def load_pdf_file(data):
-    loader= DirectoryLoader(data,
-                            glob="*.pdf",
-                            loader_cls=PyPDFLoader)
+# Extract Data From the PDF File
+import os
 
-    documents=loader.load()
+def load_pdf_files(data=None):
+    """Load PDFs from a directory.
 
+    If `data` is None, use <repo_root>/data.
+    If `data` is relative, resolve it against repository root.
+    """
+    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+    if data is None:
+        data_dir = os.path.join(repo_root, "data")
+    elif os.path.isabs(data):
+        data_dir = data
+    else:
+        data_dir = os.path.abspath(os.path.join(repo_root, data))
+
+    if not os.path.isdir(data_dir):
+        raise FileNotFoundError(f"Directory not found: {data_dir} (cwd={os.getcwd()})")
+
+    loader = DirectoryLoader(
+        data_dir,
+        glob="*.pdf",
+        loader_cls=PyPDFLoader
+    )
+
+    documents = loader.load()
     return documents
 
 
