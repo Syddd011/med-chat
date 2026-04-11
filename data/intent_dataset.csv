@@ -1,0 +1,794 @@
+text,label
+hi,greeting
+hello,greeting
+hey,greeting
+good morning,greeting
+good afternoon,greeting
+good evening,greeting
+hey there,greeting
+hi there,greeting
+hello there,greeting
+howdy,greeting
+sup,greeting
+what's up,greeting
+greetings,greeting
+hiya,greeting
+yo,greeting
+hey bot,greeting
+hello bot,greeting
+good day,greeting
+how are you,greeting
+nice to meet you,greeting
+hey medibot,greeting
+hello medibot,greeting
+start,greeting
+help me,greeting
+i need help,greeting
+can you help me,greeting
+bye,farewell
+goodbye,farewell
+see you later,farewell
+thanks bye,farewell
+ok thanks,farewell
+thank you bye,farewell
+take care,farewell
+see ya,farewell
+cya,farewell
+later,farewell
+ok goodbye,farewell
+done thanks,farewell
+thanks for your help,farewell
+that's all i needed,farewell
+you were helpful,farewell
+i'm done,farewell
+finishing up,farewell
+ok that's enough,farewell
+i'll go now,farewell
+have a good day,farewell
+what is diabetes,general_info
+what is hypertension,general_info
+what is cancer,general_info
+what is asthma,general_info
+what is arthritis,general_info
+what is anemia,general_info
+what is pneumonia,general_info
+what is tuberculosis,general_info
+what is cholesterol,general_info
+what is blood pressure,general_info
+tell me about heart disease,general_info
+explain what covid is,general_info
+what is dengue,general_info
+what causes malaria,general_info
+what is a stroke,general_info
+what is alzheimer's disease,general_info
+what is parkinson's disease,general_info
+tell me about kidney disease,general_info
+what is celiac disease,general_info
+what is crohn's disease,general_info
+what is lupus,general_info
+what is fibromyalgia,general_info
+what is epilepsy,general_info
+tell me about multiple sclerosis,general_info
+what is hypothyroidism,general_info
+what is hyperthyroidism,general_info
+what is type 1 diabetes,general_info
+what is type 2 diabetes,general_info
+what is a hernia,general_info
+what is appendicitis,general_info
+what is gastritis,general_info
+what is colitis,general_info
+what is pancreatitis,general_info
+what is hepatitis,general_info
+what is hepatitis b,general_info
+what is hepatitis c,general_info
+what is hiv,general_info
+what is aids,general_info
+explain hiv aids,general_info
+what is sickle cell anemia,general_info
+what is bone cancer,general_info
+what is breast cancer,general_info
+what is lung cancer,general_info
+what is colon cancer,general_info
+what is skin cancer,general_info
+what is melanoma,general_info
+what is rheumatoid arthritis,general_info
+what is osteoporosis,general_info
+what is kidney stones,general_info
+what are kidney stones,general_info
+what is gout,general_info
+what is eczema,general_info
+what is psoriasis,general_info
+what is rosacea,general_info
+what is athlete's foot,general_info
+what is ringworm,general_info
+what is scabies,general_info
+what is shingles,general_info
+what is herpes,general_info
+what is chlamydia,general_info
+what is gonorrhea,general_info
+what is syphilis,general_info
+what is endometriosis,general_info
+what is PCOS,general_info
+what is polycystic ovary syndrome,general_info
+what is fibroids,general_info
+what is uterine fibroids,general_info
+what is prostate cancer,general_info
+what is BPH benign prostatic hyperplasia,general_info
+what is erectile dysfunction,general_info
+what is cataracts,general_info
+what is glaucoma,general_info
+what is macular degeneration,general_info
+what is conjunctivitis,general_info
+what is pink eye,general_info
+what is sinusitis,general_info
+what is tonsillitis,general_info
+what is laryngitis,general_info
+what is bronchitis,general_info
+what is COPD,general_info
+what is emphysema,general_info
+what is sleep apnea,general_info
+what is a blood clot,general_info
+what is deep vein thrombosis,general_info
+what is pulmonary embolism,general_info
+what is atrial fibrillation,general_info
+what is heart failure,general_info
+what is coronary artery disease,general_info
+what is angina,general_info
+what is myocardial infarction,general_info
+define myocardial infarction,general_info
+what does it mean to have anemia,general_info
+explain what diabetes mellitus is,general_info
+what is the difference between type 1 and type 2 diabetes,general_info
+what does hypertension mean,general_info
+can you explain what asthma is,general_info
+what is a urinary tract infection,general_info
+what is a UTI,general_info
+what is hay fever,general_info
+what is seasonal allergies,general_info
+what is food allergy,general_info
+what is lactose intolerance,general_info
+what is celiac,general_info
+what is gluten intolerance,general_info
+i have a headache,symptoms
+i have chest pain,symptoms
+i'm having trouble breathing,symptoms
+i feel dizzy,symptoms
+i have a fever of 102,symptoms
+my stomach hurts,symptoms
+i feel nauseous,symptoms
+i've been vomiting,symptoms
+i have diarrhea,symptoms
+my back hurts,symptoms
+i have joint pain,symptoms
+my legs are swelling,symptoms
+i have a rash on my arm,symptoms
+i feel very tired,symptoms
+i can't sleep,symptoms
+i have shortness of breath,symptoms
+i have a sore throat,symptoms
+my nose is running,symptoms
+i have a cough,symptoms
+i'm coughing up blood,symptoms
+i have blood in my urine,symptoms
+my vision is blurry,symptoms
+i have ear pain,symptoms
+i have a toothache,symptoms
+my gums are bleeding,symptoms
+i feel heart palpitations,symptoms
+my heart is racing,symptoms
+i have numbness in my hand,symptoms
+my fingers are tingling,symptoms
+i have weakness in my legs,symptoms
+i have a stiff neck,symptoms
+i have muscle cramps,symptoms
+i have abdominal cramps,symptoms
+i'm losing weight without trying,symptoms
+i keep losing weight for no reason,symptoms
+my urine is very dark,symptoms
+i have pale stools,symptoms
+i have night sweats,symptoms
+i wake up sweating,symptoms
+i've been very thirsty,symptoms
+i urinate very frequently,symptoms
+i have frequent urination,symptoms
+i have burning when i urinate,symptoms
+i have a painful urination,symptoms
+i have yellowing of the skin,symptoms
+i have yellow eyes,symptoms
+i have a dry cough that won't go away,symptoms
+i feel pressure in my chest,symptoms
+i have sharp chest pain,symptoms
+i have pain that radiates to my left arm,symptoms
+i have swollen lymph nodes,symptoms
+my glands are swollen,symptoms
+i have pain in my upper right abdomen,symptoms
+i feel bloated all the time,symptoms
+i have gas and bloating,symptoms
+i have difficulty swallowing,symptoms
+i have heartburn,symptoms
+i have acid reflux,symptoms
+i feel full very quickly,symptoms
+i have blood in my stool,symptoms
+i have black stools,symptoms
+i have constipation,symptoms
+i have trouble going to the bathroom,symptoms
+i've had a headache for 3 days,symptoms
+my head has been hurting for a week,symptoms
+i have a migraine,symptoms
+i have sudden severe headache,symptoms
+my ears are ringing,symptoms
+i have tinnitus,symptoms
+i feel unsteady walking,symptoms
+i have balance problems,symptoms
+i have memory problems lately,symptoms
+i keep forgetting things,symptoms
+my skin is very itchy,symptoms
+i have hives,symptoms
+i have blisters on my skin,symptoms
+i have a lump in my breast,symptoms
+i feel a lump in my neck,symptoms
+i have swollen feet and ankles,symptoms
+i have cold hands and feet,symptoms
+i feel breathless when walking,symptoms
+i have pain in my calf,symptoms
+i have cramps in my leg at night,symptoms
+i have a burning sensation in my feet,symptoms
+i have a lump in my throat feeling,symptoms
+i have a dry mouth,symptoms
+i have bad breath,symptoms
+what could cause these symptoms,symptoms
+what does it mean if i have these symptoms,symptoms
+i've been feeling unwell for days,symptoms
+i don't feel well,symptoms
+i'm not feeling good,symptoms
+i feel sick,symptoms
+i feel weak and tired,symptoms
+i have no energy,symptoms
+i have a high temperature,symptoms
+my temperature is 38.5,symptoms
+i have chills,symptoms
+i'm shivering but not cold,symptoms
+what is ibuprofen used for,medication_info
+how do i take paracetamol,medication_info
+what is amoxicillin,medication_info
+can i take aspirin every day,medication_info
+what are the side effects of metformin,medication_info
+what is metformin used for,medication_info
+is it safe to take ibuprofen with paracetamol,medication_info
+what does panadol do,medication_info
+tell me about omeprazole,medication_info
+what is omeprazole used for,medication_info
+what is atorvastatin,medication_info
+what are statins,medication_info
+what is lisinopril for,medication_info
+what is amlodipine,medication_info
+what is losartan,medication_info
+what does metoprolol do,medication_info
+what is pantoprazole,medication_info
+what is ranitidine,medication_info
+what is cetirizine used for,medication_info
+what is loratadine,medication_info
+what antihistamine should i use,medication_info
+tell me about antihistamines,medication_info
+what is acetaminophen,medication_info
+is tylenol the same as acetaminophen,medication_info
+what is the difference between ibuprofen and paracetamol,medication_info
+what is naproxen,medication_info
+what is prednisone used for,medication_info
+what is dexamethasone,medication_info
+what are corticosteroids,medication_info
+what is amoxicillin clavulanate,medication_info
+what is azithromycin,medication_info
+how do antibiotics work,medication_info
+can i stop antibiotics early,medication_info
+what are the side effects of antibiotics,medication_info
+what is ciprofloxacin,medication_info
+what is doxycycline,medication_info
+what is fluconazole,medication_info
+what is metronidazole,medication_info
+what is clindamycin,medication_info
+tell me about blood thinners,medication_info
+what is warfarin,medication_info
+what is aspirin,medication_info
+what is clopidogrel,medication_info
+what is apixaban,medication_info
+what is rivaroxaban,medication_info
+is it safe to mix these medications,medication_info
+what are the side effects of ibuprofen,medication_info
+what are the side effects of aspirin,medication_info
+what are the side effects of paracetamol,medication_info
+is it safe to take ibuprofen on an empty stomach,medication_info
+can i take paracetamol with ibuprofen,medication_info
+what painkillers can i take,medication_info
+what is the safest painkiller,medication_info
+what is morphine,medication_info
+what is opioid,medication_info
+what are opioids,medication_info
+tell me about antidepressants,medication_info
+what is sertraline,medication_info
+what is fluoxetine,medication_info
+what is escitalopram,medication_info
+what is venlafaxine,medication_info
+what is alprazolam,medication_info
+what is diazepam,medication_info
+what are benzodiazepines,medication_info
+what is melatonin,medication_info
+what sleep medicine can i take,medication_info
+what is insulin,medication_info
+how does insulin work,medication_info
+what is glipizide,medication_info
+what is januvia,medication_info
+what is ozempic,medication_info
+what is semaglutide,medication_info
+what is atorvastatin side effects,medication_info
+what are the side effects of statins,medication_info
+what is calcium supplement good for,medication_info
+what is vitamin d supplement,medication_info
+should i take vitamin d,medication_info
+what is folic acid used for,medication_info
+what is iron supplement,medication_info
+can i take iron and calcium together,medication_info
+what is zinc supplement,medication_info
+what is vitamin c good for,medication_info
+should i take omega 3,medication_info
+what is fish oil for,medication_info
+what over the counter medicine for cold,medication_info
+what can i take for a cough,medication_info
+what is cough syrup,medication_info
+what medicine is good for diarrhea,medication_info
+what is loperamide,medication_info
+what medicine for constipation,medication_info
+what laxative should i use,medication_info
+what cream for skin rash,medication_info
+what is hydrocortisone cream,medication_info
+what is clotrimazole,medication_info
+is this medicine safe during pregnancy,medication_info
+can pregnant women take paracetamol,medication_info
+what drugs are safe in pregnancy,medication_info
+how can i lose weight,lifestyle
+how do i eat healthy,lifestyle
+what foods are good for the heart,lifestyle
+how do i improve my diet,lifestyle
+what is a balanced diet,lifestyle
+what should i eat to lower blood pressure,lifestyle
+what foods should i avoid with diabetes,lifestyle
+can exercise help diabetes,lifestyle
+how much exercise should i do per week,lifestyle
+how do i start exercising,lifestyle
+what is the best exercise for weight loss,lifestyle
+how do i build muscle,lifestyle
+how do i improve my sleep,lifestyle
+how many hours of sleep do i need,lifestyle
+why can't i sleep at night,lifestyle
+tips for better sleep,lifestyle
+how do i reduce stress,lifestyle
+how do i manage stress better,lifestyle
+tips to reduce anxiety naturally,lifestyle
+how do i meditate,lifestyle
+what is mindfulness,lifestyle
+how to do deep breathing,lifestyle
+how to calm down quickly,lifestyle
+how do i quit smoking,lifestyle
+how to stop smoking,lifestyle
+how to reduce alcohol intake,lifestyle
+what are the effects of alcohol,lifestyle
+how do i reduce cholesterol naturally,lifestyle
+what foods help lower cholesterol,lifestyle
+how do i lower my blood pressure naturally,lifestyle
+what foods lower blood sugar,lifestyle
+how do i increase my energy levels,lifestyle
+tips to feel more energetic,lifestyle
+how much water should i drink per day,lifestyle
+how to stay hydrated,lifestyle
+how do i improve my mental health,lifestyle
+how do i be happier,lifestyle
+tips to improve mood,lifestyle
+how do i reduce inflammation,lifestyle
+what anti-inflammatory foods can i eat,lifestyle
+what is the mediterranean diet,lifestyle
+what is a keto diet,lifestyle
+is keto diet healthy,lifestyle
+what is intermittent fasting,lifestyle
+how do i start intermittent fasting,lifestyle
+is intermittent fasting safe with diabetes,lifestyle
+how to maintain a healthy weight,lifestyle
+what bmi is healthy,lifestyle
+what is a healthy bmi,lifestyle
+how do i improve my posture,lifestyle
+how to strengthen my back,lifestyle
+exercises for back pain,lifestyle
+how to prevent back pain,lifestyle
+how to stretch properly,lifestyle
+how do i increase my metabolism,lifestyle
+foods that boost metabolism,lifestyle
+how do i improve my gut health,lifestyle
+what is good for digestion,lifestyle
+probiotics benefits,lifestyle
+how do i get more fiber,lifestyle
+high fiber foods list,lifestyle
+how does exercise affect mental health,lifestyle
+physical activity and depression,lifestyle
+how much walking is healthy,lifestyle
+how to walk for weight loss,lifestyle
+swimming benefits for health,lifestyle
+yoga benefits for health,lifestyle
+is yoga good for anxiety,lifestyle
+how to do yoga for beginners,lifestyle
+how to maintain a healthy heart,lifestyle
+heart healthy lifestyle tips,lifestyle
+how to prevent heart disease,lifestyle
+how to prevent diabetes,lifestyle
+how to prevent cancer,lifestyle
+cancer prevention lifestyle,lifestyle
+how to boost immune system,lifestyle
+immunity boosting foods,lifestyle
+how to prevent getting sick,lifestyle
+how to cope with chronic pain,lifestyle
+coping with chronic illness,lifestyle
+how to maintain energy with chronic disease,lifestyle
+i think i am having a heart attack,emergency_like
+my chest is hurting very badly,emergency_like
+i can't breathe at all,emergency_like
+i'm choking,emergency_like
+someone is choking,emergency_like
+i took too many pills,emergency_like
+i overdosed on medication,emergency_like
+i think i overdosed,emergency_like
+i feel like i'm going to pass out,emergency_like
+i just fainted,emergency_like
+someone fainted,emergency_like
+i'm bleeding heavily,emergency_like
+the bleeding won't stop,emergency_like
+there's a lot of blood,emergency_like
+i think i'm having a stroke,emergency_like
+i can't move my face or arm,emergency_like
+sudden numbness on one side of body,emergency_like
+sudden loss of vision,emergency_like
+i suddenly can't see clearly,emergency_like
+severe headache suddenly,emergency_like
+worst headache of my life,emergency_like
+the worst headache ever,emergency_like
+i'm having a seizure,emergency_like
+someone is having a seizure,emergency_like
+someone is unconscious,emergency_like
+my child won't wake up,emergency_like
+i can't wake someone up,emergency_like
+severe allergic reaction,emergency_like
+my throat is closing up,emergency_like
+my tongue is swelling,emergency_like
+i'm not breathing well,emergency_like
+i think i'm going into shock,emergency_like
+my blood pressure is extremely high,emergency_like
+i think i poisoned myself,emergency_like
+i drank a cleaning product,emergency_like
+help this is an emergency,emergency_like
+what do i do in a medical emergency,emergency_like
+someone fell and hit their head,emergency_like
+severe head injury,emergency_like
+the person is not responding,emergency_like
+i'm feeling suicidal,emergency_like
+help i want to hurt myself,emergency_like
+i want to end my life,emergency_like
+i can't stop the bleeding from my arm,emergency_like
+i feel depressed,mental_health
+i've been feeling sad for weeks,mental_health
+nothing makes me happy anymore,mental_health
+i feel hopeless,mental_health
+i feel worthless,mental_health
+i've lost interest in everything,mental_health
+i feel empty inside,mental_health
+i'm crying all the time,mental_health
+i have no motivation,mental_health
+i feel anxious all the time,mental_health
+i'm always worried,mental_health
+i can't stop worrying,mental_health
+i have panic attacks,mental_health
+i had a panic attack,mental_health
+what is a panic attack,mental_health
+i have anxiety,mental_health
+i suffer from anxiety,mental_health
+what is generalized anxiety disorder,mental_health
+what is GAD,mental_health
+i think i have OCD,mental_health
+what is OCD,mental_health
+i have intrusive thoughts,mental_health
+i feel like i'm going crazy,mental_health
+i have mood swings,mental_health
+i think i have bipolar disorder,mental_health
+what is bipolar disorder,mental_health
+what is PTSD,mental_health
+i have trauma,mental_health
+i went through a traumatic experience,mental_health
+i have flashbacks,mental_health
+i'm having nightmares,mental_health
+i can't sleep due to anxiety,mental_health
+social anxiety makes me avoid people,mental_health
+i'm afraid of going outside,mental_health
+i have a phobia,mental_health
+i'm afraid of flying,mental_health
+i struggle to get out of bed,mental_health
+i have no energy and feel sad,mental_health
+i eat less because i'm sad,mental_health
+loss of appetite due to sadness,mental_health
+i've been eating too much when stressed,mental_health
+stress eating,mental_health
+i feel stressed all the time,mental_health
+work stress is affecting my health,mental_health
+i'm burned out,mental_health
+burnout symptoms,mental_health
+how do i deal with depression,mental_health
+how do i manage my anxiety,mental_health
+what therapy is good for anxiety,mental_health
+what is CBT,mental_health
+is therapy helpful for depression,mental_health
+what are signs of depression,mental_health
+i think i have depression,mental_health
+signs that you need mental health help,mental_health
+how to help someone who is depressed,mental_health
+what to say to someone who is depressed,mental_health
+how to support someone with anxiety,mental_health
+how to cope with grief,mental_health
+grief after loss,mental_health
+i lost my loved one,mental_health
+dealing with grief,mental_health
+how do i do cpr,first_aid
+how do i perform cpr,first_aid
+what is cpr,first_aid
+how many chest compressions in cpr,first_aid
+when should i use cpr,first_aid
+how to help someone who is choking,first_aid
+what is the heimlich maneuver,first_aid
+how do i stop bleeding,first_aid
+how to treat a cut,first_aid
+how to treat a deep wound,first_aid
+how to treat a burn,first_aid
+what to do if i have a burn,first_aid
+how to treat sunburn,first_aid
+how to treat a sprained ankle,first_aid
+what to do for a sprain,first_aid
+how to treat a broken bone,first_aid
+how to splint a broken arm,first_aid
+what to do when someone faints,first_aid
+how to help someone who has fainted,first_aid
+what to do for heat stroke,first_aid
+how to treat dehydration,first_aid
+how to treat a nosebleed,first_aid
+how to stop a nosebleed,first_aid
+how to treat a bee sting,first_aid
+what to do after bee sting,first_aid
+what to do for an allergic reaction to insect bite,first_aid
+how to treat a snake bite,first_aid
+what to do for food poisoning,first_aid
+how to treat food poisoning at home,first_aid
+what to do if someone swallows poison,first_aid
+how to treat a head injury,first_aid
+how to tell if someone has a concussion,first_aid
+concussion first aid,first_aid
+how to treat an eye injury,first_aid
+something is stuck in my eye,first_aid
+how to remove a foreign object from eye,first_aid
+how to treat a drowning victim,first_aid
+how to treat electric shock,first_aid
+how to treat hypoglycemia low blood sugar,first_aid
+how to treat a panic attack first aid,first_aid
+how to treat a seizure,first_aid
+what to do during an epileptic seizure,first_aid
+how to use an epipen,first_aid
+how to treat anaphylaxis,first_aid
+how to treat a dislocated shoulder,first_aid
+how to treat a black eye,first_aid
+how to treat a blister,first_aid
+what to do for choking baby,first_aid
+infant choking first aid,first_aid
+how to do child cpr,first_aid
+how to treat frostbite,first_aid
+how to treat hypothermia,first_aid
+how much protein should i eat daily,nutrition
+how many calories should i consume,nutrition
+what are high protein foods,nutrition
+what foods are rich in iron,nutrition
+what foods are high in calcium,nutrition
+what are good sources of vitamin D,nutrition
+what foods are high in fiber,nutrition
+how much fiber should i eat per day,nutrition
+what foods are good for the liver,nutrition
+what is a good diet for kidneys,nutrition
+kidney friendly diet,nutrition
+what foods should i avoid for blood pressure,nutrition
+low sodium diet foods,nutrition
+what foods help lower cholesterol,nutrition
+what is a heart healthy diet,nutrition
+what foods raise blood sugar,nutrition
+glycemic index foods,nutrition
+what is a low glycemic diet,nutrition
+what foods are good for brain health,nutrition
+brain boosting foods,nutrition
+antioxidant rich foods,nutrition
+what are antioxidants,nutrition
+what vitamins should i take every day,nutrition
+do i need to take supplements,nutrition
+what is the benefit of magnesium,nutrition
+foods high in magnesium,nutrition
+what is potassium good for,nutrition
+high potassium foods,nutrition
+low potassium diet,nutrition
+what foods are high in vitamin b12,nutrition
+vitamin b12 deficiency foods,nutrition
+what are the benefits of omega 3,nutrition
+foods rich in omega 3,nutrition
+what is folate,nutrition
+folate rich foods,nutrition
+what foods are good during pregnancy,nutrition
+diet during pregnancy,nutrition
+what should i avoid eating during pregnancy,nutrition
+what is a vegetarian diet,nutrition
+is a vegan diet healthy,nutrition
+how do i get protein on a vegan diet,nutrition
+nutrient deficiencies on vegan diet,nutrition
+what is a gluten free diet,nutrition
+what foods to avoid with celiac,nutrition
+what is the dash diet,nutrition
+what is the dash diet for blood pressure,nutrition
+healthy breakfast ideas,nutrition
+healthy lunch ideas,nutrition
+healthy dinner options,nutrition
+what are empty calories,nutrition
+what is junk food,nutrition
+how does sugar affect health,nutrition
+is eating fat bad,nutrition
+healthy fats vs bad fats,nutrition
+what is trans fat,nutrition
+what foods have trans fat,nutrition
+how much salt is too much,nutrition
+my baby has a fever,pediatric_health
+my child has a fever of 101,pediatric_health
+what temperature is too high for a child,pediatric_health
+my toddler is not eating,pediatric_health
+my child refuses to eat,pediatric_health
+my baby is not sleeping,pediatric_health
+my child has colic,pediatric_health
+what is colic in babies,pediatric_health
+my baby cries all night,pediatric_health
+my child has a rash,pediatric_health
+my baby has a rash,pediatric_health
+what causes diaper rash,pediatric_health
+how to treat diaper rash,pediatric_health
+my baby has diarrhea,pediatric_health
+my child has vomiting and diarrhea,pediatric_health
+how to treat dehydration in children,pediatric_health
+my child swallowed something,pediatric_health
+my child swallowed a coin,pediatric_health
+my toddler swallowed a small object,pediatric_health
+my child has ear pain,pediatric_health
+ear infection in children,pediatric_health
+my child has swimmer's ear,pediatric_health
+my child failed hearing test,pediatric_health
+my child has a cold,pediatric_health
+my baby has runny nose,pediatric_health
+my child has croup,pediatric_health
+what is croup,pediatric_health
+my child has asthma,pediatric_health
+my child has allergies,pediatric_health
+childhood allergies symptoms,pediatric_health
+my child has eczema,pediatric_health
+what causes eczema in children,pediatric_health
+my child has ADHD,pediatric_health
+what is ADHD in children,pediatric_health
+signs of autism in children,pediatric_health
+what is autism spectrum disorder,pediatric_health
+my child has delayed speech,pediatric_health
+my child is not talking yet,pediatric_health
+when should a baby start walking,pediatric_health
+normal milestones for babies,pediatric_health
+my baby is not gaining weight,pediatric_health
+my child has jaundice at birth,pediatric_health
+what is newborn jaundice,pediatric_health
+when should my baby get vaccinated,pediatric_health
+vaccine schedule for children,pediatric_health
+what vaccines does my child need,pediatric_health
+my child had a febrile seizure,pediatric_health
+what is febrile seizure,pediatric_health
+my child has pink eye,pediatric_health
+my child has conjunctivitis,pediatric_health
+my child has lice,pediatric_health
+how to treat head lice in children,pediatric_health
+my child has chickenpox,pediatric_health
+how long does chickenpox last,pediatric_health
+i have irregular periods,women_health
+my period is late,women_health
+i missed my period,women_health
+how late can a period be,women_health
+i have painful periods,women_health
+how to manage period pain,women_health
+i have heavy periods,women_health
+what is menorrhagia,women_health
+i have spotting between periods,women_health
+what is PCOS,women_health
+polycystic ovary syndrome symptoms,women_health
+how to manage PCOS,women_health
+i have endometriosis,women_health
+endometriosis pain management,women_health
+what are symptoms of endometriosis,women_health
+i have uterine fibroids,women_health
+what are fibroids,women_health
+how is pregnancy confirmed,women_health
+i think i might be pregnant,women_health
+what are early signs of pregnancy,women_health
+pregnancy symptoms first trimester,women_health
+what is morning sickness,women_health
+how to manage nausea in pregnancy,women_health
+what is preeclampsia,women_health
+what is gestational diabetes,women_health
+how to treat gestational diabetes,women_health
+what are signs of miscarriage,women_health
+what causes miscarriage,women_health
+i'm going through menopause,women_health
+what are menopause symptoms,women_health
+how to manage hot flashes,women_health
+what is perimenopause,women_health
+what is hormone replacement therapy,women_health
+what is HRT,women_health
+how to do breast self exam,women_health
+breast cancer symptoms in women,women_health
+ovarian cancer symptoms,women_health
+cervical cancer symptoms,women_health
+what is a pap smear,women_health
+how often should i get a pap smear,women_health
+i have vaginal discharge,women_health
+what causes vaginal discharge,women_health
+what is bacterial vaginosis,women_health
+what is a yeast infection,women_health
+how to treat a yeast infection,women_health
+what are pregnancy safe exercises,women_health
+postpartum depression symptoms,women_health
+what is baby blues,women_health
+how to treat postpartum depression,women_health
+breastfeeding benefits,women_health
+is breastfeeding painful,women_health
+how long should i breastfeed,women_health
+what is polycystic ovarian disease,women_health
+are you a real doctor,other
+can you prescribe medicine,other
+are you human,other
+what can you do,other
+what are your capabilities,other
+what kind of questions can i ask,other
+can you analyze my blood test,other
+can you read my mri,other
+are you better than a real doctor,other
+can you give me a diagnosis,other
+i have a question,other
+can i ask something,other
+is this chatbot free,other
+who made you,other
+tell me about yourself,other
+what are you,other
+i need a second opinion,other
+i disagree with my doctor,other
+my doctor said this,other
+i got test results,other
+explain my lab report,other
+not a medical question,other
+something else,other
+random question,other
+i just wanted to say,other
+testing,other
+test,other
+nothing,other
+never mind,other
+ok,other
+okay,other
+sure,other
+yes,other
+no,other
+maybe,other
+alright,other
+sounds good,other
+got it,other
+i see,other
+i understand,other
+continue,other
+please continue,other
+tell me more,other
+what else,other
+and then what,other

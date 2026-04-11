@@ -1,0 +1,1264 @@
+ 
+ 
+ 
+     
+ 
+ 
+ 
+     
+ 
+ 
+ 
+PROJECT REPORT  ON  
+Crypto Trading Platform using Machine Learning with AI”  
+ BY  
+Tushar Gupta  
+Roll No: MCB24251 
+MCA- IV Semester  
+(Session: 2025-2026)  
+  
+  
+SUBMITTED TO  
+SCHOOL OF COMPUTER APPLICATIONS  
+  
+PCET’S  
+PIMPRI CHINCHWAD UNIVERSITY, SATE PUNE  
+IN THE PARTIAL FULFILLMENT OF THE REQUIREMENT FOR THE AWARD OF DEGREE IN  
+  
+MASTER OF COMPUTER APPLICATIONS (MCA)  
+Batch 2024-2026  
+    
+     
+
+ 
+ 
+ 
+ 
+    
+Ref:                    Date:  
+Certificate  
+  
+This is to certify that Mr. Tushar Gupta is a bonafide student of School of Computer 
+Applications, Pimpri Chinchwad University, Sate Maval, Pune has successfully completed 
+the project work as prescribed by Pimpri Chinchwad University, in the partial fulfilment of 
+Master of Computer Applications (MCA) Program for the Academic Year 2025-26.  
+The project work, entitled as Crypto Trading Platform using Machine Learning 
+with AI”  has been carried out at the establishment of  
+“_____________________  
+Roll No.: MCB24251  
+PRN No.: SCA24801030120 
+Exam Seat No.:_____________     
+  
+        Mr. Sanjay Dandele Dr. Kamlesh Meshram  
+  
+Internal Guide    Project Co-ordinator                   Head, SOCA      
+  
+  
+  
+
+ 
+ 
+ 
+    
+  
+Declaration  
+  
+I hereby declare that the project work entitled, Crypto Trading Platform Using Machine Learning 
+With Ai submitted under guidance of Prof. Madhuri Dharro, is my original work completed under the 
+four walls of Maincraft Technology  
+  
+The Project Report submitted is my own work and has not been duplicated from any other source. I shall 
+be responsible for any unpleasure moment/situation.  
+  
+  
+  
+Tushar Gupta  
+  
+    
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+      ACKNOWLEDGEMENT  
+  
+  
+I would like to express my gratitude and sincere regards to the following people to whom I am grateful for their 
+support and help without which I would not have been able to do this project entitled Crypto Trading 
+Platform Using Machine Learning With AI 
+  
+I would like to thanks Dr. Kamlesh Meshram, HOD, SOCA, PCU for providing us with excellent facilities valuable 
+guidance.  
+ - 
+My special thanks to Prof. Madhuri Dharro, Internal Guide, whose cooperation and keen interest coupled with 
+valuable suggestions help me in the completion of the project.  
+Last but not least, I am thankful to all Teaching and Non-Teaching staff of the college, whose names have not been 
+mentioned here but have directly or indirectly helped me in the completion of this project.  
+  
+  
+                                                                 Tushar Gupta   
+ 
+ 
+ 
+      TABLE OF CONTENTS  
+Chapter  Content  Page  
+Number  
+Chapter 1   Introduction     1 
+1.1   Background/Problem Statement    1 
+1.2   Objectives of the Project     1-2 
+1.3   Scope of the Project     2-3 
+Chapter 2   Literature Survey/Review   4 
+2.1   Overview of existing work     4 
+2.2   Projects, or products reviewed     4-5 
+2.3   Identification of gaps     5-6 
+Chapter 3   System Analysis     6 
+3.1   Requirements Specification   
+  Functional Requirements   
+  Non-functional Requirements   
+  6-9 
+3.2   Feasibility Study (Technical, Economic, and Operational Feasibility)     9-10 
+3.3   Tools and Technologies Used     10-11 
+Chapter 4   Design     11 
+4.1   System Architecture     11-12 
+4.2   Diagrams (e.g., Use Case, Class, Sequence, ...)     12-18 
+4.3   Database Design (if applicable)     19 
+Chapter 5   Implementation     20 
+5.1   Description of Modules/Components     20 
+5.2   Frontend Development     20-21 
+5.3   Backend Development     21-22 
+5.4   Integration     22-24 
+5.5   Code Snippets (if required; avoid too much detail)     24-29 
+5.6   Screenshots of the Application/System (if applicable)     29-37 
+Chapter 6   Testing     37 
+6.1   Test Cases and Testing Methodology     37-38 
+6.2   Results of Testing     39-40 
+6.3   Bug Fixes/Issues Resolved     41-42 
+Chapter 7   Conclusion & Future Scope     43 
+7.1   Summary of the work     43-44 
+7.2   Limitations    44-45 
+7.3   Future Enhancements     45-46 
+Chapter 8   References(Use a standard format like APA, IEEE, or as specified by the 
+institution)   
+  47 
+Chapter 9   Appendices     47-48 
+Chapter 10   Annexure -Progress Sheet     49-50 
+ 
+ 
+ 
+  
+    
+  
+ 
+  
+ 
+CHAPTER 1: INTRODUCTION  
+1.1 Introduction  
+Cryptocurrency has emerged as one of the most innovative and rapidly growing financial technologies in 
+recent years. It enables secure, decentralized, and transparent digital transactions without the involvement 
+of traditional banking systems. Popular cryptocurrencies such as Bitcoin and Ethereum have gained 
+widespread acceptance, attracting investors, traders, and organizations worldwide. 
+However, cryptocurrency markets are highly volatile and unpredictable, making trading a challenging task. 
+Prices fluctuate rapidly due to various factors such as market demand, global events, investor sentiment, 
+and technological changes. Traditional trading methods rely heavily on manual analysis, which is time-
+consuming, error-prone, and often influenced by human emotions like fear and greed. 
+To overcome these challenges, the integration of Artificial Intelligence (AI) and Machine Learning 
+(ML) has become essential. AI and ML techniques can analyze large volumes of historical and real-time 
+data, identify patterns, and predict future price trends with improved accuracy. These technologies help 
+traders make informed decisions, reduce risks, and enhance trading efficiency. 
+This project, titled “Crypto Trading Platform using Machine Learning with AI”, aims to develop a 
+smart and user-friendly system that combines modern web technologies with intelligent algorithms. The 
+platform allows users to view real-time cryptocurrency data, analyze market trends, receive AI-based 
+trading recommendations, and manage their portfolios effectively. 
+The system is designed using modern technologies such as React for frontend development, backend 
+frameworks like Node.js or Python, and Machine Learning libraries for prediction models. It also 
+integrates external APIs to fetch real-time market data and ensures secure user authentication and data 
+handling. 
+Overall, this project provides a comprehensive solution for cryptocurrency trading by combining data 
+analytics, AI-driven insights, and user-friendly design, making trading more efficient, accurate, and 
+accessible for both beginners and experienced users. 
+ ` 
+1.2 Background / Problem Statement  
+Background  
+Cryptocurrency is a digital form of currency that operates on decentralized networks using blockchain 
+technology. Unlike traditional financial systems, it does not rely on central authorities such as banks or 
+governments, making transactions more secure, transparent, and efficient. Over the past decade, 
+cryptocurrencies like Bitcoin and Ethereum have gained global recognition and widespread adoption. 
+With the increasing popularity of cryptocurrencies, online trading platforms have emerged to facilitate 
+buying, selling, and managing digital assets. These platforms provide users with access to real-time market 
+data, charts, and trading tools. However, due to the highly dynamic nature of the crypto market, analyzing 
+trends and making profitable decisions remains a challenging task. 
+    
+  
+ 
+  
+ 
+The rapid growth in the volume of trading data has made manual analysis inefficient and time-consuming. 
+Traders often rely on historical data and basic indicators, which may not always provide accurate insights 
+into future price movements. Additionally, market behavior is influenced by multiple factors such as global 
+economic conditions, technological developments, and investor sentiment. 
+In this context, the use of Artificial Intelligence (AI) and Machine Learning (ML) has become 
+increasingly important. These technologies can process large datasets, identify hidden patterns, and 
+generate predictive models for better decision-making. By integrating AI into crypto trading platforms, it 
+becomes possible to enhance accuracy, reduce risks, and improve overall trading efficiency. 
+This project is based on the concept of combining modern web technologies with AI and ML techniques to 
+create a smart crypto trading platform that provides real-time analysis, predictive insights, and a user-
+friendly experience. 
+ 
+ 
+Problem Statement  
+The current methods and tools used for flare system design present the following challenges:  
+1. Lack of AI-based prediction capabilities for accurate decision-making  
+2. Heavy reliance on manual analysis of market trends  
+3. Difficulty in processing large volumes of real-time data  
+4. High risk due to market volatility in cryptocurrencies like Bitcoin and Ethereum  
+5. Time-consuming analysis leading to delayed decisions  
+6. Increased chances of human errors and emotional trading  
+7. Limited support for automated trading recommendations  
+ 
+ 
+1.3 Objectives of the Project  
+The main objective of this project is to develop an intelligent and user-friendly Crypto Trading Platform 
+using Machine Learning with AI that enhances trading efficiency and decision-making. 
+Specific Objectives  
+• To develop a secure and scalable crypto trading platform for users  
+• To implement Machine Learning algorithms for predicting price trends of cryptocurrencies like 
+Bitcoin and Ethereum  
+• To provide real-time market data and analysis using external APIs  
+• To reduce human errors and emotional bias in trading decisions  
+• To design a user-friendly interface for both beginners and experienced traders  
+• To enable portfolio management and transaction tracking  
+• To provide AI-based trading recommendations for better decision-making  
+    
+  
+ 
+  
+ 
+• To ensure data security and user authentication 
+  
+1.4 Scope of the Project  
+The scope of the Crypto Trading Platform using Spring Boot and React is to develop a web-based 
+application that allows users to securely manage and trade cryptocurrencies in a simulated environment. 
+The system will provide a user-friendly interface where users can register, log in, and access various 
+features related to cryptocurrency trading.  
+The platform will enable users to view real-time cryptocurrency market data, search for different coins, 
+and perform buy and sell transactions. It will also include wallet management features that allow users to 
+add balance, transfer funds between wallets, and withdraw funds to a bank account. Users will be able to 
+monitor their investments through portfolio management tools and track all activities through a detailed 
+transaction history.  
+The system will also provide strong security mechanisms such as user authentication, password recovery, 
+and two-factor authentication to ensure safe access to the platform. Additionally, the platform will integrate 
+external APIs to fetch real-time cryptocurrency prices and market information.  
+This project mainly focuses on demonstrating the implementation of a modern full-stack web application 
+using technologies like Spring Boot, React, and MySQL, along with API integration and secure 
+authentication. The platform will serve as an educational and demonstration tool for understanding how 
+real-world cryptocurrency trading systems work. The scope of the project can be further extended in the 
+future by adding advanced features such as real-time trading charts, mobile application support, AI-based 
+market analysis, and blockchain wallet integration.  
+  
+Out-of-Scope Features  
+The following functionalities are not included in the current version of the system:  
+• Real-time trading with actual financial transactions (live money trading)  
+• Integration with real banking systems for deposits and withdrawals  
+• Support for all global cryptocurrencies (limited coins only)  
+• Advanced high-frequency trading (HFT) algorithms  
+• Full blockchain wallet integration    
+ 
+    
+  
+ 
+  
+ 
+ 
+ 
+ 
+ 
+CHAPTER 2: LITERATURE SURVEY / REVIEW  
+2.1 Overview of Existing Work  
+In recent years, significant research and development have been carried out in the field of cryptocurrency 
+trading and prediction using Artificial Intelligence (AI) and Machine Learning (ML). With the increasing 
+popularity of digital currencies such as Bitcoin and Ethereum, many researchers and developers have 
+focused on building systems that can analyze market trends and assist in trading decisions. 
+Existing crypto trading platforms primarily provide features such as real-time price tracking, historical data 
+visualization, and basic trading functionalities. These platforms rely on charts, indicators, and user 
+interpretation for decision-making. However, they lack advanced intelligence for predicting future price 
+movements. 
+Several  studies have explored the use of Machine Learning algorithms such as Linear Regression, Support 
+Vector Machines (SVM), Random Forest, and Neural Networks for cryptocurrency price prediction. 
+Among these, Deep Learning models like Long Short-Term Memory (LSTM) have shown promising 
+results due to their ability to handle time-series data and capture complex patterns in market trends. 
+Some research works also incorporate sentiment analysis using data from social media platforms and 
+news articles to understand market behavior. These approaches analyze public opinion and correlate it with 
+price fluctuations to improve prediction accuracy. 
+Despite these advancements, existing systems still face several limitations, such as: 
+• Limited prediction accuracy due to market volatility  
+• Lack of real-time intelligent decision support  
+• High computational complexity  
+• Difficulty in integrating multiple data sources  
+Therefore, there is a need for a more efficient and intelligent system that combines real-time data analysis 
+with advanced Machine Learning techniques to provide better predictions and assist users in making 
+informed trading decisions. 
+2.2 Projects, Products, or Tools Reviewed  
+In the field of cryptocurrency trading and analysis, several platforms and tools have been developed to 
+assist users in managing and trading digital assets. These systems provide various features such as real-
+    
+  
+ 
+  
+ 
+time data visualization, trading options, and basic analytical tools. Some of the widely used platforms and 
+tools are discussed below: 
+1. CoinMarketCap: 
+Provides real-time cryptocurrency prices, market capitalization, trading volume, and historical data. 
+It is widely used for tracking market trends but does not offer trading or predictive features.  
+ 
+2. Binance: 
+One of the largest cryptocurrency exchanges that allows users to buy, sell, and trade digital assets. 
+It provides advanced trading tools and charts but relies heavily on user analysis rather than AI-
+based predictions.  
+ 
+ 
+3. Coinbase: 
+A user-friendly platform designed mainly for beginners. It offers secure transactions and portfolio 
+management but has limited advanced analytical and prediction capabilities.  
+ 
+4. TradingView: 
+A popular tool for technical analysis, offering advanced charts and indicators. However, it requires 
+users to interpret data manually and does not provide automated decision-making.  
+ 
+ 
+5. Kaggle: 
+Provides datasets and notebooks related to cryptocurrency and machine learning. It is useful for 
+research and model development but is not a complete trading system.  
+ 
+2.3 Identification of Gaps  
+From the study of existing cryptocurrency trading platforms and research work, several gaps and 
+limitations have been identified. Although platforms like Binance and Coinbase provide efficient trading 
+functionalities, they lack intelligent systems for automated decision-making and accurate predictions.  
+1. Lack of AI Integration:  
+Most existing platforms do not effectively utilize Artificial Intelligence and Machine Learning for price 
+prediction.  
+2.Manual Analysis Dependency:  
+Users must rely on charts and indicators, which require technical knowledge and experience.  
+3.Limited Prediction Accuracy: 
+Available tools do not provide reliable forecasting of cryptocurrency prices like Bitcoin and Ethereum.  
+4.No Automated Recommendations:  
+    
+  
+ 
+  
+ 
+Existing systems do not offer smart buy/sell suggestions based on data analysis.  
+      5.Handling Large Data: 
+Difficulty in processing and analyzing large volumes of real-time market data efficiently.  
+      6.User Complexity:  
+Platforms can be difficult for beginners due to complex interfaces and technical requirements.  
+• Emotional Decision-Making: Lack of automation leads to human bias and emotional trading 
+decisions.  
+    
+  
+ 
+  
+ 
+CHAPTER 3: SYSTEM ANALYSIS  
+ 
+3.1 Requirements Specification  
+Requirements specification defines the functional and non-functional requirements of the system. It 
+helps in understanding what the system should do and how it should perform.  
+3.1.1 Functional Requirements  
+Functional requirements describe the specific operations and features that the system must perform.  
+  
+1. User Registration and Login 
+Allows new users to create an account and existing users to log in securely using credentials.  
+ 
+2. Real-Time Crypto Data Display 
+Shows live prices and market data of cryptocurrencies like Bitcoin and Ethereum using APIs.  
+ 
+ 
+3. Buy and Sell Cryptocurrency 
+Enables users to perform trading operations such as buying and selling digital assets.  
+ 
+4. Portfolio Management 
+Helps users track their investments, total balance, and profit/loss in one place.  
+ 
+ 
+5. Transaction History 
+Maintains a record of all user activities like buy, sell, deposits, and withdrawals. 
+  
+6. AI/ML-Based Price Prediction 
+Uses Machine Learning models to predict future price trends based on historical data. 
+ 
+  
+7. Trading Recommendations 
+Provides suggestions (buy/sell/hold) based on AI analysis to support decision-making.  
+ 
+8. Wallet Management 
+Allows users to add balance, transfer funds, and withdraw money securely.  
+ 
+ 
+ 
+ 
+3.1.2 Non-Functional Requirements  
+Non-functional requirements define the quality attributes and performance standards of the system.  
+    
+  
+ 
+  
+ 
+  
+1. Performance 
+The system should respond quickly and handle real-time data efficiently without delays.  
+ 
+2. Security 
+Ensures protection of user data using encryption, authentication, and secure APIs.  
+ 
+ 
+3. Usability (User-Friendly Interface) 
+The platform should be easy to use for both beginners and experienced users.  
+ 
+4. Scalability 
+The system should handle increasing users and large volumes of data without performance issues.  
+ 
+ 
+5. Reliability 
+The system should work continuously without crashes or failures.  
+ 
+6. Compatibility 
+The platform should work smoothly on different devices (mobile, desktop) and browsers.  
+ 
+ 
+3.2 Feasibility Study  
+A feasibility study evaluates whether the project is practical, achievable, and beneficial using available      
+resources, technology, and time.  
+3.2.1 Technical Feasibility  
+Technical Feasibility 
+• The project uses modern technologies like React, Node.js/Python, and Machine Learning  
+• APIs provide real-time data for cryptocurrencies like Bitcoin and Ethereum  
+• Tools and frameworks are easily available and widely supported  
+• System can be developed using existing hardware and software 
+  
+  
+  
+3.2.2 Economic Feasibility  
+• Uses open-source technologies (React, Python, etc.)  
+    
+  
+ 
+  
+ 
+• No need for expensive infrastructure  
+• Development cost is low and affordable  
+• Maintenance cost is minimal  
+ 
+3.2.3 Operational Feasibility  
+The system is operationally feasible due to:  
+• System is easy to use and user-friendly  
+• Helps users in better decision-making using AI  
+• Reduces manual effort and improves efficiency  
+• Suitable for both beginners and experts  
+ 
+  
+3.3 Tools and Technologies Used  
+The development of the Crypto Trading Platform using Machine Learning with AI involves a 
+combination of modern tools and technologies for frontend, backend, database, and machine learning. 
+  
+Development Environment  
+• VS Code / IntelliJ IDEA: 
+Code editors for development.  
+• Git & GitHub: 
+Version control and code management. 
+ 
+  
+Frontend Technologies  
+• React.js: 
+Used to build a dynamic and interactive user interface.  
+• Tailwind CSS / CSS: 
+Used for designing responsive and attractive layouts.  
+• Redux: 
+Manages application state efficiently.  
+• Axios: 
+Handles API requests to fetch real-time data.  
+• React Router DOM: 
+Enables navigation between different pages.  
+ 
+    
+  
+ 
+  
+ 
+Backend Technologies 
+• Node.js / Python (Flask/Django): 
+Used to develop server-side logic and APIs.  
+• REST APIs: 
+Enables communication between frontend and backend. 
+  
+ Database  
+MongoDB / MySQL: 
+Stores user data, transaction history, and crypto information. 
+  
+Additional Features  
+• AI Chatbot Support for answering user queries  
+• Real-time alerts & notifications for price changes  
+• Advanced charts and visualization tools  
+• Risk analysis and profit/loss prediction  
+• Two-Factor Authentication (2FA) for enhanced security  
+• Dark mode / customizable UI for better user experience  
+  
+    
+  
+ 
+  
+ 
+CHAPTER 4: DESIGN  
+  
+4.1 System Architecture  
+ 
+    
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+4.2 Diagrams  
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+4.2.1 Use Case Diagram   
+  
+  
+                                 
+              
+                            
+       
+                             
+                            
+             
+              
+                                  
+                                
+                                
+                 
+                     
+                             
+                                  
+                              
+         
+      
+                          
+      
+     
+        
+   
+         
+    
+  
+ 
+  
+ 
+4.2.2 Class Diagram  
+  
+   
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 4.2.3 ER Database Diagram  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+    
+
+    
+  
+ 
+  
+ 
+ 
+ 
+ 
+ 
+4.2.4 Block Diagram  
+  
+  
+ 
+    
+
+    
+  
+ 
+  
+ 
+ 
+ 
+ 
+Workflow Diagram 
+ 
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+4.2.5 Activity Diagram  
+ 
+ 
+  
+  
+ 
+    
+  
+ 
+  
+ 
+ 
+
+    
+  
+ 
+  
+ 
+  
+    
+CHAPTER 5: IMPLEMENTATION  
+5.1 Description of Modules / Components  
+The Crypto Trading Platform using Machine Learning with AI is divided into multiple modules, each 
+responsible for specific functionalities. These modules work together to ensure smooth operation of the 
+system. 
+1. User Authentication Module 
+• Handles user registration and login  
+• Ensures secure authentication using credentials  
+• Manages user sessions  
+ 2. Dashboard Module 
+• Displays real-time cryptocurrency data  
+• Shows prices of coins like Bitcoin and Ethereum  
+• Provides charts and market trends  
+ 3. Trading Module 
+• Allows users to buy and sell cryptocurrencies  
+• Processes user transactions  
+• Updates user balance and portfolio  
+ 
+ 4. Portfolio Management Module 
+• Tracks user investments  
+• Displays profit/loss analysis  
+• Maintains wallet balance  
+•  
+ 5. Machine Learning Module 
+• Analyzes historical and real-time data  
+• Predicts future price trends  
+• Provides AI-based recommendations  
+    
+  
+ 
+  
+ 
+ 6. API Integration Module 
+• Fetches real-time data from external crypto APIs  
+• Ensures updated market information  
+ 7. Database Module 
+• Stores user data, transactions, and portfolio details  
+• Ensures data consistency and security  
+ 8. Notification Module 
+• Sends alerts for price changes and trading updates  
+• Notifies users about important events  
+  
+5.2 Frontend Development  
+The frontend is developed using modern web technologies such as React.js, HTML, CSS, and 
+JavaScript. React.js is used to create reusable components and manage the dynamic behavior of the 
+application. Tailwind CSS is used for designing a clean and responsive user interface.  
+Key Features:  
+➢ User Interface (UI): 
+Provides an attractive and easy-to-use interface for users.  
+➢ Dashboard: 
+Displays real-time data of cryptocurrencies like Bitcoin and Ethereum along with charts and 
+trends.  
+➢ Navigation System: 
+Uses React Router for smooth navigation between pages such as login, dashboard, and trading.  
+➢ API Integration: 
+Axios is used to fetch real-time data from backend and external APIs.  
+➢ Responsive Design: 
+Ensures compatibility across different devices such as mobile, tablet, and desktop.  
+➢ State Management: 
+Redux is used to manage application state efficiently. The frontend ensures smooth interaction 
+between the user and the system.  
+  
+5.3 Backend Development  
+The backend is developed using technologies such as Node.js / Python (Flask or Django). It uses REST 
+APIs to communicate with the frontend and process user requests..  
+Core Technologies:  
+    
+  
+ 
+  
+ 
+➢ Artificial Intelligence (AI): 
+Used for intelligent decision-making and automation.  
+➢ Machine Learning (ML): 
+Predicts price trends of cryptocurrencies like Bitcoin and Ethereum based on historical data.  
+➢ React.js: 
+Builds a dynamic and interactive user interface.  
+➢ Node.js / Python: 
+Handles backend logic and API development.  
+➢ Database (MongoDB/MySQL): 
+Stores user data, transactions, and portfolio details.  
+➢ REST APIs: 
+Fetch real-time cryptocurrency data and enable communication between frontend and backend. 
+ 
+5.4 Integration  
+Integration is the process of combining different modules of the system to work together as a single, 
+unified application. In the Crypto Trading Platform using Machine Learning with AI, integration 
+ensures smooth communication between the frontend, backend, database, APIs, and Machine Learning 
+models. 
+The frontend, developed using React.js, interacts with the backend through REST APIs. User actions such 
+as login, trading, and portfolio management are sent to the backend, where they are processed and stored in 
+the database. 
+The backend integrates with external APIs to fetch real-time cryptocurrency data for coins like Bitcoin and 
+Ethereum. This data is then passed to the Machine Learning module for analysis and prediction. 
+The Machine Learning module processes the data and returns predictions and recommendations, which are 
+displayed on the frontend dashboard. The database stores all user-related information, including account 
+details, transaction history, and portfolio data. 
+  
+Integration Features:  
+• Seamless frontend and backend communication using REST APIs  
+• Integration with external APIs for real-time crypto data 
+• Machine Learning model integration for prediction and analysis  
+• Smooth connection between backend and database for data storage  
+• Real-time data synchronization across all modules  
+• Secure data transfer using authentication and encryption  
+• Efficient handling of user requests and responses    
+ 
+ 
+ 
+ 
+    
+  
+ 
+  
+ 
+5.5 Code Snippets 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+5.6 Screenshots of The Application 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+ 
+
+    
+  
+ 
+  
+ 
+ 
+Generated Report  
+ 
+ 
+ 
+ 
+ 
+CHAPTER 6: TESTING  
+6.1 Test Cases and Testing Methodology  
+Testing Approach  
+Testing is an important phase of the project that ensures the system works correctly, efficiently, and without 
+errors. In the Crypto Trading Platform using Machine Learning with AI, different testing techniques 
+are applied to verify each module and overall system performance. 
+Types of Testing Performed  
+➢ Unit Testing: 
+Each module (login, trading, ML, etc.) is tested individually.  
+
+    
+  
+ 
+  
+ 
+➢ Integration Testing: 
+Ensures all modules work together correctly.  
+➢ System Testing: 
+Tests the complete system as a whole.  
+➢ User Acceptance Testing (UAT): 
+Verifies that the system meets user requirements.Error Handling Testing – Invalid inputs and 
+system responses   
+  
+6.1.1 Test Cases for Input Screens  
+   
+Test Case 
+ID Input Screen Test Scenario Input Expected Output Result 
+TC01 Registration 
+Form Valid input Correct name, email, 
+password Registration successful Pass 
+TC02 Registration 
+Form Invalid email Wrong email format Error message 
+displayed Pass 
+TC03 Login Form Valid login Correct username & 
+password Login successful Pass 
+TC04 Login Form Invalid login Wrong credentials Error message shown Pass 
+TC05 Trading Input Buy crypto Enter valid amount for 
+Bitcoin Transaction successful Pass 
+TC06 Trading Input Invalid amount Negative or zero value Error message 
+displayed Pass 
+TC07 Prediction Input Request 
+prediction Select Ethereum Shows predicted result Pass 
+TC08 Empty Fields Submit without 
+input Blank fields Validation message 
+displayed Pass 
+  
+ 
+ 
+    
+  
+ 
+  
+ 
+6.2 Results of Testing  
+• All modules were successfully tested and performed as expected  
+• The system correctly handled valid and invalid inputs  
+• Real-time data for cryptocurrencies like Bitcoin and Ethereum was displayed accurately  
+• Trading operations such as buy and sell were executed without errors  
+• Machine Learning predictions were generated with acceptable accuracy  
+• Security features like authentication and validation worked properly  
+• The system showed stable performance under normal usage conditions. 
+  
+6.3 Bug Fixes / Issues Resolved  
+Major Issues Identified and Fixes  
+Issue Cause Solution 
+Login validation error Improper credential verification logic Implemented secure authentication and 
+validation 
+Invalid input acceptance Missing input validation checks Added form validation and error messages 
+API data delay Slow external API response Optimized API calls and added caching 
+Trading calculation error Incorrect logic for balance updates Fixed buy/sell transaction logic 
+UI display issues Poor frontend rendering and layout 
+bugs Improved UI design and responsiveness 
+ML prediction 
+inaccuracy 
+Insufficient training data and 
+preprocessing Enhanced model training and data cleaning 
+Security vulnerabilities Weak session handling and 
+authentication 
+Implemented encryption and secure 
+sessions 
+Slow system 
+performance 
+Unoptimized database queries and 
+backend logic 
+Optimized queries and improved backend 
+performance 
+  
+  
+     
+    
+  
+ 
+  
+ 
+CHAPTER 7: CONCLUSION & FUTURE SCOPE  
+7.1 Summary of the Work  
+The project titled “Crypto Trading Platform using Machine Learning with AI” was successfully 
+designed and developed to provide an intelligent and efficient solution for cryptocurrency trading. The 
+system integrates modern web technologies with Machine Learning algorithms to analyze market trends 
+and assist users in making informed decisions. 
+The platform enables users to view real-time data of cryptocurrencies such as Bitcoin and Ethereum, 
+perform trading operations, and manage their investment portfolios. It also incorporates AI-based 
+prediction models that analyze historical and real-time data to forecast future price trends. 
+The system was developed using technologies like React for frontend, Node.js/Python for backend, and 
+databases such as MongoDB/MySQL for data management. Proper integration of APIs ensures real-time 
+updates, while security features protect user data and transactions. 
+Comprehensive testing was conducted to ensure system reliability, performance, and accuracy. All modules 
+were verified, and identified issues were resolved successfully, resulting in a stable and efficient 
+application. 
+  
+Key Achievements  
+• Successfully developed an AI-based crypto trading platform  
+• Implemented Machine Learning models for price prediction  
+• Integrated real-time data APIs for cryptocurrencies like Bitcoin and Ethereum  
+• Enabled buy/sell trading functionality with accurate transaction handling  
+• Designed a user-friendly and responsive interface  
+• Reduced manual effort and human errors in trading decisions  
+• Provided smart trading recommendations using AI  
+• Ensured secure authentication and data protection  
+  
+7.2 Limitations  
+Although the Crypto Trading Platform using Machine Learning with AI provides many advanced 
+features, it has certain limitations: 
+• Prediction Accuracy Limits: 
+Machine Learning models cannot guarantee 100% accuracy due to the volatile nature of 
+cryptocurrencies like Bitcoin and Ethereum  
+• Dependence on External APIs: 
+System relies on third-party APIs for real-time data, which may cause delays or downtime  
+• Limited Cryptocurrency Support: 
+The platform supports only a limited number of cryptocurrencies  
+    
+  
+ 
+  
+ 
+• No Real-Time Financial Trading (Demo-Based): 
+The system may not support actual money transactions in the current version  
+• Performance Constraints: 
+High traffic or large datasets may affect system performance  
+• Basic Security Features: 
+Advanced security features like blockchain wallet integration may not be fully implemented  
+• Internet Dependency: 
+Requires stable internet connection for proper functioning  
+👇 
+ 
+7.3 Future Enhancements 
+ 
+The Crypto Trading Platform using Machine Learning with AI can be further improved by adding 
+advanced features and technologies to enhance performance, usability, and accuracy. 
+ 
+• Implement advanced AI/Deep Learning models (LSTM, Neural Networks) for better prediction 
+accuracy  
+• Support a wider range of cryptocurrencies beyond Bitcoin and Ethereum  
+• Develop a mobile application (Android/iOS) for improved accessibility  
+• Integrate automated trading bots for real-time trading execution  
+• Add sentiment analysis using news and social media data  
+• Enhance security features such as blockchain wallet integration and two-factor authentication  
+• Improve system scalability to handle large-scale users and data  
+• Provide multi-language support for global users 
+    
+CHAPTER 8: REFERENCES  
+The following books, websites, and research papers were referred to during the development of this 
+project: 
+ 
+🔹 Books 
+ 
+Tom M. Mitchell, Machine Learning, McGraw-Hill  
+Aurélien Géron, Hands-On Machine Learning with Scikit-Learn & TensorFlow, O’Reilly  
+Stuart Russell & Peter Norvig, Artificial Intelligence: A Modern Approach, Pearson  
+ 
+🔹 Websites 
+ 
+• CoinMarketCap – https://coinmarketcap.com  
+ 
+• Binance – https://www.binance.com  
+ 
+    
+  
+ 
+  
+ 
+• Coinbase – https://www.coinbase.com  
+ 
+• Kaggle – https://www.kaggle.com  
+ 
+• GitHub – https://github.com  
+ 
+🔹 Research Papers 
+ 
+• “Bitcoin Price Prediction using Machine Learning Techniques”  
+• “Cryptocurrency Market Analysis using Deep Learning Models”  
+• “AI-Based Financial Forecasting and Trading Systems”  
+ 
+ 
+  
+    
+  
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+CHAPTER 9: APPENDICES  
+ 
+│ 
+├── frontend/                     # React Frontend 
+│   ├── public/ 
+│   ├── src/ 
+│   │   ├── components/          # Reusable UI components 
+│   │   ├── pages/               # Pages (Login, Dashboard, Trading) 
+│   │   ├── redux/               # State management 
+│   │   ├── services/            # API calls (Axios) 
+│   │   ├── App.js 
+│   │   └── index.js 
+│ 
+├── backend/                     # Node.js / Python Backend 
+│   ├── controllers/             # Business logic 
+│   ├── routes/                  # API routes 
+│   ├── models/                  # Database models 
+    
+  
+ 
+  
+ 
+│   ├── config/                  # DB configuration 
+│   ├── middleware/              # Authentication & security 
+│   ├── server.js / app.py 
+│ 
+├── ml-model/                    # Machine Learning Module 
+│   ├── dataset/                 # Training data 
+│   ├── preprocessing.py 
+│   ├── model.py 
+│   ├── prediction.py 
+│ 
+├── database/                    # Database scripts 
+│   ├── schema.sql / collections.json 
+│ 
+├── docs/                        # Documentation 
+│   ├── report.docx 
+│   ├── diagrams/ 
+│ 
+├── .env                         # Environment variables 
+├── package.json 
+└── README.md 
+ 
+ 
+ 
+ 
+ 
+ 
+🔹 API Endpoints Table 
+ 
+ 
+Method Endpoint Description Request Parameters Response 
+POST /api/auth/register Register a new user name, email, password User created successfully 
+POST /api/auth/login User login email, password Authentication token 
+    
+  
+ 
+  
+ 
+Method Endpoint Description Request Parameters Response 
+GET /api/user/profile Get user profile token User details 
+GET /api/crypto/prices Fetch real-time prices coin (e.g., Bitcoin) Current price data 
+GET /api/crypto/history Get historical data coin, date range Price history 
+POST /api/trade/buy Buy cryptocurrency coin, amount Transaction success 
+POST /api/trade/sell Sell cryptocurrency coin, amount Transaction success 
+GET /api/portfolio View portfolio token Portfolio details 
+GET /api/transactions Transaction history token List of transactions 
+POST /api/predict Get ML prediction coin (e.g., Ethereum) Predicted price 
+ 
+ 
+ 
+ 
+Chapter 10: Annexure -Progress Sheet  
+ 
+Milestone Description Start Date End Date Status Faculty Sign 
+Project topic selection and approval 01/02/26 07/02/26 Completed  
+Requirement gathering and analysis 09/02/26 21/02/26 Completed  
+System design and architecture 22/02/26  28/02/26 Completed  
+Frontend development 01/3/26 06/03/26 Completed  
+Backend development 06/03/26 10/03/26 Completed  
+    
+  
+ 
+  
+ 
+Milestone Description Start Date End Date Status Faculty Sign 
+API integration and database setup 11/03/26 14/03/26 Completed  
+Machine Learning model implementation 15/03/26 18/03/26 Completed  
+Testing (Unit & Integration) 18/03/26 25/03/26 Completed  
+Documentation 25/03/26 10/04/26 Completed  
+ 
+Student Signature: _______________________________ Date: _______________ 
+ 
+ Faculty Guide Signature: __________________________ Date: _______________ 
+ 
+ HOD Signature: __________________________                Date: _______________ 
+ 
+ 
+ 

@@ -1,0 +1,135 @@
+COMMON DISEASES AND CONDITIONS — MEDICAL REFERENCE
+
+RESPIRATORY CONDITIONS
+
+ASTHMA
+A chronic inflammatory disease of the airways causing recurrent episodes of wheezing, breathlessness, chest tightness, and coughing — especially at night or early morning.
+Triggers: allergens (dust mites, pollen, pet dander, mold), respiratory infections, exercise, cold air, smoke, strong odors, stress.
+Symptoms: shortness of breath, wheezing (whistling sound when breathing), chest tightness, chronic cough (especially at night).
+Diagnosis: spirometry (lung function test), peak flow measurement, allergy testing.
+Severity: intermittent, mild persistent, moderate persistent, severe persistent.
+Treatment:
+- Reliever (rescue) inhalers: Short-acting beta-agonists (salbutamol/albuterol) — for immediate relief during attacks.
+- Controller (preventer) inhalers: Inhaled corticosteroids (beclomethasone, fluticasone, budesonide) — taken daily to prevent attacks.
+- Long-acting beta-agonists (salmeterol): Added to ICS for moderate-severe asthma.
+- Montelukast (leukotriene modifier): Oral tablet, especially useful for allergic asthma.
+- Oral corticosteroids: Short courses for severe attacks.
+Asthma attack emergency signs: Blue lips, inability to speak full sentences, not responding to reliever inhaler — call 108/911 immediately.
+
+CHRONIC OBSTRUCTIVE PULMONARY DISEASE (COPD)
+Progressive lung disease including chronic bronchitis and emphysema. Main cause: cigarette smoking (80–90% of cases). Also caused by long-term exposure to dust, chemical fumes, air pollution.
+Symptoms: gradual worsening breathlessness, chronic cough with mucus, frequent respiratory infections, wheezing, fatigue, unintentional weight loss (advanced).
+Diagnosis: Spirometry (FEV1/FVC ratio below 0.70).
+Treatment: Stop smoking (most important intervention), bronchodilators (tiotropium, salbutamol), ICS, pulmonary rehabilitation, oxygen therapy (severe), vaccinations (flu, pneumonia).
+
+PNEUMONIA
+Infection that inflames the air sacs (alveoli) in the lung. Can be bacterial, viral, fungal, or aspiration.
+Symptoms: cough with phlegm, fever, chills, difficulty breathing, chest pain with breathing, fatigue, nausea/vomiting.
+Bacterial pneumonia (most common serious type): caused by Streptococcus pneumoniae. Treated with antibiotics.
+Community-acquired pneumonia: amoxicillin or amoxicillin-clavulanate, azithromycin (in India).
+Hospitalization required if: oxygen saturation below 92%, very high fever, multi-lobar involvement, elderly or immunocompromised patients.
+
+TUBERCULOSIS (TB)
+Bacterial infection caused by Mycobacterium tuberculosis. Major public health issue in India (India has highest TB burden globally).
+Pulmonary TB symptoms: persistent cough for 2+ weeks, blood in sputum, night sweats, weight loss, fever, fatigue.
+Diagnosis: sputum smear microscopy, GeneXpert (CBNAAT), chest X-ray, tuberculin skin test (Mantoux).
+Treatment: DOTS (Directly Observed Treatment, Short-Course) — 6 months minimum. First-line drugs: Isoniazid (H), Rifampicin (R), Pyrazinamide (Z), Ethambutol (E). Never stop early — leads to drug-resistant TB.
+Drug-Resistant TB (MDR-TB): Resistant to at least Isoniazid and Rifampicin. Requires longer treatment (18–24 months) with second-line drugs.
+
+THYROID DISORDERS
+
+HYPOTHYROIDISM
+Underactive thyroid — not enough thyroid hormone production.
+Causes: Hashimoto's thyroiditis (autoimmune, most common), thyroid surgery, radioiodine treatment, iodine deficiency.
+Symptoms: fatigue, weight gain, cold intolerance, dry skin, constipation, hair loss, depression, slow heart rate, muscle weakness, irregular periods.
+Diagnosis: TSH elevated, T3/T4 low.
+Treatment: Levothyroxine (synthetic T4) — taken daily on empty stomach, 30 minutes before food. Dose adjusted based on TSH levels.
+
+HYPERTHYROIDISM
+Overactive thyroid — too much thyroid hormone.
+Causes: Graves' disease (autoimmune — most common), toxic multinodular goiter, thyroid adenoma.
+Symptoms: weight loss despite increased appetite, rapid/irregular heartbeat, heat intolerance, excessive sweating, tremors, anxiety, irritability, frequent bowel movements, fatigue, prominent eyes (Graves' disease).
+Diagnosis: TSH low, T3/T4 elevated.
+Treatment: Anti-thyroid drugs (carbimazole, propylthiouracil), radioiodine therapy, thyroid surgery (thyroidectomy).
+
+ARTHRITIS
+
+OSTEOARTHRITIS (OA)
+"Wear and tear" arthritis — most common form. Cartilage in joints breaks down.
+Most commonly affects: knees, hips, spine, hands.
+Symptoms: joint pain and stiffness (worse in morning or after inactivity), tenderness, reduced range of motion, grating sensation, bone spurs.
+Risk factors: older age, obesity, previous joint injury, repetitive stress, family history, female sex.
+Treatment: Exercise (low-impact: swimming, cycling), weight loss (critical for knee OA), physical therapy, paracetamol and NSAIDs for pain, topical NSAIDs, intra-articular corticosteroid injections, joint replacement surgery (severe cases).
+
+RHEUMATOID ARTHRITIS (RA)
+Autoimmune form of arthritis — immune system attacks joint lining (synovium).
+Typically affects: small joints of hands and feet, wrists, knees, ankles. Usually symmetric (both sides).
+Symptoms: joints that are swollen, warm, tender, stiff (especially morning stiffness lasting >1 hour), fatigue, fever, weight loss. Can affect organs (lungs, heart, eyes, kidneys).
+Diagnosis: rheumatoid factor (RF), anti-CCP antibodies, CRP, ESR, X-rays.
+Treatment: DMARDs — Disease-Modifying Anti-Rheumatic Drugs. Methotrexate (first-line). Hydroxychloroquine, sulfasalazine, leflunomide. Biologics (TNF inhibitors: adalimumab, etanercept) for moderate-severe RA. NSAIDs and corticosteroids for symptom control.
+
+KIDNEY (RENAL) DISEASE
+
+CHRONIC KIDNEY DISEASE (CKD)
+Gradual loss of kidney function over months to years. Most common causes: diabetes mellitus (type 1 and 2), hypertension. Other causes: glomerulonephritis, polycystic kidney disease, recurrent kidney infections.
+Stages: 1–5 based on GFR (glomerular filtration rate). Stage 5 = kidney failure (GFR <15 mL/min/1.73m²) requiring dialysis or transplant.
+Symptoms (often no symptoms until advanced): fatigue, fluid retention (swelling in legs, ankles, feet), shortness of breath, appetite loss, nausea, confusion, blood in urine, foamy urine, hypertension.
+Key blood tests: serum creatinine, eGFR, urea. Urine: protein-to-creatinine ratio.
+Treatment: Control blood pressure (target <130/80), control blood sugar (diabetics), ACE inhibitors/ARBs (protect kidneys), low-protein diet, avoid nephrotoxic drugs (NSAIDs, contrast dye), treat anemia with erythropoietin, dialysis (hemodialysis or peritoneal dialysis) for end-stage renal disease.
+
+KIDNEY STONES (NEPHROLITHIASIS)
+Hard deposits from minerals and salts forming in the kidneys.
+Types: calcium oxalate (most common), calcium phosphate, uric acid, struvite, cystine.
+Symptoms: severe flank pain (renal colic) coming in waves, pain radiating to lower abdomen and groin, blood in urine (hematuria), painful urination, nausea, vomiting, frequent urination, fever/chills (if infected).
+Treatment: Small stones (<5mm): pass on own with hydration (2–3L water/day) and pain relief (NSAIDs, opioids). Tamsulosin helps passage. Larger stones or blocked stones: lithotripsy (ESWL — shock waves), ureteroscopy, or percutaneous nephrolithotomy. Prevention: high fluid intake, dietary modifications based on stone type.
+
+URINARY TRACT INFECTION (UTI)
+Infection in any part of the urinary system (kidneys, ureters, bladder, urethra). More common in women (shorter urethra).
+Types: Cystitis (bladder infection — most common), pyelonephritis (kidney infection — more serious).
+Symptoms: burning sensation on urination, frequent urge to urinate, passing small amounts of urine, cloudy or strong-smelling urine, pelvic pain (women), blood in urine. Kidney infection adds: fever, back/flank pain, nausea, vomiting.
+Treatment: Antibiotics — trimethoprim-sulfamethoxazole, nitrofurantoin, or ciprofloxacin. Drink plenty of water. Pyelonephritis may require IV antibiotics and hospitalization. Always complete full course.
+
+LIVER DISEASE
+
+HEPATITIS B AND C
+Viral infections of the liver. Hepatitis B: transmitted through blood, sexual contact, mother-to-child. Hepatitis C: primarily through blood (IV drug use, unsterilized needles). Both can cause chronic infection, cirrhosis, liver failure, liver cancer.
+Hepatitis B prevention: Vaccination (highly effective). Hepatitis C: No vaccine; treat with direct-acting antivirals (DAAs) — highly effective (95%+ cure rate).
+Symptoms: Often no symptoms for years (silent). When present: fatigue, jaundice (yellow skin/eyes), dark urine, abdominal pain, nausea, loss of appetite.
+
+FATTY LIVER DISEASE (NAFLD / MASLD)
+Accumulation of fat in the liver not caused by alcohol. NAFLD = Non-Alcoholic Fatty Liver Disease (now renamed MASLD). Strongly associated with obesity, type 2 diabetes, insulin resistance, high cholesterol.
+Symptoms: Usually no symptoms. May cause fatigue, upper right abdominal discomfort.
+Diagnosis: Ultrasound, elevated liver enzymes (ALT, AST).
+Treatment: Weight loss (5–10% reduction significantly improves liver health), exercise, healthy diet, control blood sugar and cholesterol. No approved medications yet (research ongoing).
+
+HEART CONDITIONS
+
+CORONARY ARTERY DISEASE (CAD)
+Plaque buildup in coronary arteries, reducing blood flow to the heart.
+Risk factors: High LDL cholesterol, hypertension, smoking, diabetes, obesity, physical inactivity, family history, age, male sex.
+Symptoms: Angina (chest pain/pressure with exertion or stress), shortness of breath, palpitations.
+Complications: Heart attack (myocardial infarction), heart failure, arrhythmia, sudden cardiac death.
+Treatment: Lifestyle modification, medications (aspirin, statins, beta-blockers, ACE inhibitors, nitrates), coronary angioplasty (PCI), coronary artery bypass surgery (CABG).
+
+HEART FAILURE
+The heart cannot pump enough blood to meet the body's needs. Does NOT mean the heart stops — it means it works less efficiently.
+Types: HFrEF (reduced ejection fraction — weak pump), HFpEF (preserved ejection fraction — stiff heart).
+Common causes: CAD, hypertension, diabetes, cardiomyopathy, valvular heart disease.
+Symptoms: Breathlessness (especially lying flat), leg/ankle swelling, fatigue, reduced exercise tolerance, rapid or irregular heartbeat, cough (sometimes with pink frothy sputum).
+Treatment: ACE inhibitors/ARBs, beta-blockers, diuretics (furosemide), spironolactone, SGLT2 inhibitors (now proven beneficial in heart failure), ICD/CRT devices in selected patients, heart transplant (end-stage).
+
+DIABETES AND ENDOCRINE CONDITIONS — See diabetes_reference.txt
+
+CANCER — KEY FACTS
+
+Common symptoms that may indicate cancer (see a doctor promptly):
+- Unexplained weight loss
+- Persistent fatigue
+- A lump that does not go away
+- Unexplained bleeding or bruising
+- Changes in bowel or bladder habits
+- Persistent cough or hoarseness
+- Changes in a mole or skin lesion
+- Difficulty swallowing
+
+Note on cancer: Cancer is not one disease — it encompasses hundreds of different conditions. Most cancers are more treatable when caught early. Regular screening (mammogram, Pap smear, colonoscopy) is the most effective prevention tool.

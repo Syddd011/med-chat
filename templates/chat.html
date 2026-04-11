@@ -3,133 +3,564 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Medical Chatbot</title>
+  <title>MediBot — AI Medical Assistant</title>
+  <meta name="description" content="MediBot is an AI-powered medical information assistant. Ask health questions and get instant guidance. Not a replacement for professional medical advice." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <style>
+    /* ──────────────────────────────────────────────────────────────────────────
+       PHASE 4 — Extended Styles
+    ────────────────────────────────────────────────────────────────────────── */
+
+    /* Emergency banner */
+    #emergencyBanner {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: linear-gradient(90deg, #c62828, #b71c1c);
+      color: #fff; text-align: center;
+      font-size: 12px; font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      padding: 8px 12px; z-index: 9000;
+      letter-spacing: 0.02em;
+    }
+    #emergencyBanner a { color: #ffcdd2; text-decoration: none; margin: 0 4px; }
+    #emergencyBanner a:hover { text-decoration: underline; }
+
+    /* Disclaimer overlay */
+    #disclaimerOverlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.84);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+    }
+    #disclaimerBox {
+      background: #0f1923;
+      border: 1px solid #ff4d4f;
+      border-radius: 18px;
+      max-width: 520px; width: 100%;
+      padding: 36px 32px 28px;
+      box-shadow: 0 0 60px rgba(255,77,79,.25);
+      animation: popIn .4s cubic-bezier(.175,.885,.32,1.275);
+    }
+    @keyframes popIn {
+      from { opacity:0; transform: scale(.88) translateY(20px); }
+      to   { opacity:1; transform: scale(1) translateY(0); }
+    }
+    #disclaimerBox .disc-icon { font-size:42px; text-align:center; display:block; margin-bottom:14px; }
+    #disclaimerBox h2 { color:#ff4d4f; font-size:20px; font-weight:700; text-align:center; margin-bottom:16px; }
+    #disclaimerBox p { color:#b0bec5; font-size:14px; line-height:1.7; margin-bottom:12px; }
+    #disclaimerBox p strong { color:#e8f0fe; }
+    #disclaimerBox .disc-list {
+      background: rgba(255,77,79,.08); border-left: 3px solid #ff4d4f;
+      border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 14px 0;
+      color: #b0bec5; font-size: 13px; line-height: 1.8;
+    }
+    #disclaimerBox .disc-checkbox-row { display:flex; align-items:flex-start; gap:10px; margin:18px 0 22px; }
+    #disclaimerBox .disc-checkbox-row input[type="checkbox"] { width:18px; height:18px; margin-top:2px; accent-color:#00e5a0; flex-shrink:0; }
+    #disclaimerBox .disc-checkbox-row label { color:#b0bec5; font-size:13px; line-height:1.5; cursor:pointer; }
+    #agreeBtn {
+      width:100%; padding:14px;
+      background: linear-gradient(135deg,#00e5a0,#00b8d4);
+      color:#0a1628; font-weight:700; font-size:15px;
+      border:none; border-radius:12px; cursor:pointer; font-family:'Inter',sans-serif;
+      transition: opacity .2s, transform .15s;
+    }
+    #agreeBtn:disabled { background:#2a3a4a; color:#546e7a; cursor:not-allowed; }
+    #agreeBtn:not(:disabled):hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,229,160,.35); }
+    .disc-links { text-align:center; margin-top:14px; font-size:12px; color:#546e7a; }
+    .disc-links a { color:#00b8d4; text-decoration:none; }
+
+    body { padding-top: 34px; }
+
+    /* ── Header auth buttons ─────────────────────────────────────────────── */
+    .header-actions { display:flex; align-items:center; gap:8px; margin-left:auto; }
+    .auth-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+      cursor: pointer; border: none;
+      font-family: 'Inter', sans-serif;
+      transition: opacity .2s, transform .15s;
+      text-decoration: none; display:inline-block;
+    }
+    .auth-btn-login {
+      background: transparent;
+      border: 1px solid rgba(29,184,122,.5);
+      color: #1db87a;
+    }
+    .auth-btn-signup {
+      background: linear-gradient(135deg, #1db87a, #00b8d4);
+      color: #0a1628;
+    }
+    .auth-btn-user {
+      background: rgba(29,184,122,.12);
+      border: 1px solid rgba(29,184,122,.25);
+      color: #90e0c0; font-size: 11px; max-width: 120px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .auth-btn-logout {
+      background: transparent;
+      border: 1px solid rgba(255,100,100,.35);
+      color: #ff8080; font-size: 11px;
+    }
+    .auth-btn:hover { opacity:.85; transform:translateY(-1px); }
+
+    /* ── Chat layout with optional sidebar ──────────────────────────────── */
+    .app-shell {
+      display: flex;
+      height: calc(100vh - 34px);
+      max-width: 1140px;
+      margin: 0 auto;
+      gap: 0;
+    }
+
+    /* ── History sidebar ────────────────────────────────────────────────── */
+    #historySidebar {
+      width: 240px;
+      min-width: 240px;
+      background: #0a1525;
+      border-right: 1px solid rgba(29,184,122,.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: width .3s ease, min-width .3s ease;
+    }
+    #historySidebar.hidden { width: 0; min-width: 0; }
+    .sidebar-header {
+      padding: 18px 16px 12px;
+      font-size: 12px; font-weight: 600; color: #546e7a;
+      text-transform: uppercase; letter-spacing: .08em;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .sidebar-new-btn {
+      background: rgba(29,184,122,.12);
+      border: 1px solid rgba(29,184,122,.2);
+      color: #1db87a; font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 12px; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+    .sidebar-new-btn:hover { background: rgba(29,184,122,.22); }
+    .sidebar-list {
+      flex: 1; overflow-y: auto; padding: 8px;
+    }
+    .sidebar-item {
+      padding: 10px 12px; border-radius: 10px;
+      font-size: 13px; color: #90a4ae; cursor: pointer;
+      transition: background .15s;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+    .sidebar-item:hover { background: rgba(255,255,255,.04); color: #e0e0e0; }
+    .sidebar-item.active { background: rgba(29,184,122,.1); color: #e0f5ee; }
+    .sidebar-empty { padding: 24px 16px; font-size: 13px; color: #37474f; text-align: center; line-height: 1.6; }
+
+    /* ── Main chat area ──────────────────────────────────────────────────── */
+    .chat-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* Adjust chat-card to fill height inside shell */
+    .chat-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    /* ── Copy button on messages ────────────────────────────────────────── */
+    .msg-actions { display:flex; align-items:center; gap:6px; }
+    .copy-btn {
+      background: transparent;
+      border: none; cursor: pointer;
+      font-size: 14px; opacity: 0;
+      transition: opacity .2s;
+      color: #546e7a; padding: 2px 4px;
+      border-radius: 4px;
+    }
+    .msg-row:hover .copy-btn { opacity: 1; }
+    .copy-btn:hover { background: rgba(255,255,255,.08); color: #b0bec5; }
+    .copy-btn.copied { color: #1db87a; opacity: 1; }
+
+    /* ── Feedback buttons ───────────────────────────────────────────────── */
+    .msg-feedback { display:flex; gap:4px; align-items:center; }
+    .fb-btn {
+      background: none; border: none; cursor: pointer;
+      font-size: 14px; opacity: .5; transition: opacity .2s, transform .15s;
+      padding: 2px; line-height: 1;
+    }
+    .fb-btn:hover { opacity: 1; transform: scale(1.2); }
+    .fb-btn.fb-active { opacity: 1; }
+    .fb-btn.fb-up.fb-active  { filter: drop-shadow(0 0 4px #00e5a0); }
+    .fb-btn.fb-down.fb-active { filter: drop-shadow(0 0 4px #ff4d4f); }
+
+    /* ── Typing indicator ───────────────────────────────────────────────── */
+    .typing-label { font-size: 11px; color: #546e7a; margin-left: 6px; font-style: italic; }
+
+    /* ── Character counter ──────────────────────────────────────────────── */
+    .char-counter { font-size: 11px; color: #37474f; white-space: nowrap; }
+    .char-counter.warn { color: #ff8f00; }
+    .char-counter.danger { color: #ff4d4f; }
+
+    /* ── Chip categories ────────────────────────────────────────────────── */
+    .chip-category { margin-bottom: 10px; }
+    .chip-cat-label {
+      font-size: 11px; font-weight: 600; color: #546e7a;
+      text-transform: uppercase; letter-spacing: .06em;
+      margin-bottom: 6px; display: block;
+    }
+
+    /* ── Sidebar toggle btn ─────────────────────────────────────────────── */
+    .sidebar-toggle {
+      background: transparent; border: none; cursor: pointer;
+      color: #546e7a; font-size: 16px; padding: 6px 8px;
+      border-radius: 8px; transition: background .15s, color .15s;
+    }
+    .sidebar-toggle:hover { background: rgba(255,255,255,.06); color: #90a4ae; }
+
+    /* ── Mobile ─────────────────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      #historySidebar { display: none !important; }
+      .app-shell { height: calc(100vh - 34px); }
+      .auth-btn-user { display: none; }
+      .header-actions { gap: 6px; }
+      .auth-btn { padding: 5px 10px; font-size: 11px; }
+      .starter-chips { gap: 6px; }
+      .chip { font-size: 12px; padding: 7px 12px; }
+    }
+    @media (max-width: 400px) {
+      #emergencyBanner { font-size: 10px; }
+    }
+  </style>
 </head>
 <body>
 
-  <div class="chat-card">
+  <!-- ── Emergency sticky banner ── -->
+  <div id="emergencyBanner">
+    🚨 <strong>Emergency?</strong> &nbsp;
+    🇮🇳 <a href="tel:108">108</a> (Ambulance) &nbsp;·&nbsp; <a href="tel:104">104</a> (Health) &nbsp;·&nbsp; <a href="tel:9152987821">iCall</a> (Mental)
+    &nbsp;|&nbsp;
+    🇺🇸 <a href="tel:911">911</a> &nbsp;·&nbsp; <a href="tel:988">988</a> (Crisis)
+    &nbsp;|&nbsp; 🌍 <a href="tel:112">112</a>
+  </div>
 
-    <!-- ── Header ── -->
-    <header class="chat-header">
-      <div class="header-avatar">
-        🩺
-        <span class="online-dot"></span>
+  <!-- ── Medical Disclaimer Overlay ── -->
+  <div id="disclaimerOverlay">
+    <div id="disclaimerBox">
+      <span class="disc-icon">⚕️</span>
+      <h2>Medical Disclaimer — Please Read</h2>
+      <p><strong>MediBot is an AI information assistant, NOT a licensed medical professional.</strong> It is designed to provide general health information only.</p>
+      <div class="disc-list">
+        ⚠️ Do <strong>NOT</strong> use this for medical emergencies — call 108 / 911 immediately<br>
+        ⚠️ Responses are <strong>informational only</strong>, not medical advice<br>
+        ⚠️ Always <strong>consult a licensed doctor</strong> before making health decisions<br>
+        ⚠️ Do <strong>NOT</strong> share personally identifiable health data<br>
+        ⚠️ AI can make mistakes — verify information with a healthcare professional
       </div>
-      <div class="header-info">
-        <div class="header-name">Medical Chatbot</div>
-        <div class="header-sub">Ask me anything!</div>
+      <p>By continuing, you confirm you are <strong>18 years or older</strong> and agree to our <a href="/terms" target="_blank" style="color:#00b8d4">Terms of Service</a> and <a href="/privacy" target="_blank" style="color:#00b8d4">Privacy Policy</a>.</p>
+      <div class="disc-checkbox-row">
+        <input type="checkbox" id="discCheck" />
+        <label for="discCheck">I understand MediBot is NOT a substitute for professional medical advice, diagnosis, or treatment. I will seek a licensed doctor for medical concerns.</label>
       </div>
-    </header>
+      <button id="agreeBtn" disabled>I Understand — Enter MediBot</button>
+      <div class="disc-links">
+        <a href="/terms" target="_blank">Terms of Service</a> &nbsp;·&nbsp;
+        <a href="/privacy" target="_blank">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
 
-    <!-- ── Welcome ── -->
-    <div class="chat-welcome">
-      <div class="welcome-greeting">Hello there 👋</div>
-      <h1 class="welcome-headline">
-        I'm your <em>AI Health Consultant</em> —<br>
-        How can I help you today?
-      </h1>
+  <!-- ── App Shell ── -->
+  <div class="app-shell">
+
+    <!-- ── History Sidebar (logged-in users) ── -->
+    <div id="historySidebar" class="hidden">
+      <div class="sidebar-header">
+        History
+        <button class="sidebar-new-btn" onclick="newConversation()" title="New chat">+ New</button>
+      </div>
+      <div class="sidebar-list" id="sidebarList">
+        <div class="sidebar-empty" id="sidebarEmpty">Your conversations<br>will appear here</div>
+      </div>
     </div>
 
-    <!-- ── Messages ── -->
-    <div class="chat-messages" id="chatMessages">
+    <!-- ── Main Chat Area ── -->
+    <div class="chat-main">
+      <div class="chat-card">
 
-      <!-- Typing indicator (hidden by default) -->
-      <div class="msg-row bot" id="typingRow" style="display:none;">
-        <div class="msg-avatar bot-av">🩺</div>
-        <div class="typing">
-          <span></span><span></span><span></span>
+        <!-- ── Header ── -->
+        <header class="chat-header">
+          <button class="sidebar-toggle" id="sidebarToggle" title="Toggle history" aria-label="Toggle history" style="display:none;">☰</button>
+          <div class="header-avatar">
+            🩺
+            <span class="online-dot"></span>
+          </div>
+          <div class="header-info">
+            <div class="header-name">MediBot</div>
+            <div class="header-sub">AI Health Information Assistant</div>
+          </div>
+          <div class="header-disclaimer-tag">ℹ️ Not a doctor</div>
+
+          <!-- Auth buttons -->
+          <div class="header-actions">
+            {% if current_user.is_authenticated %}
+              <span class="auth-btn auth-btn-user" title="{{ current_user.email }}">👤 {{ current_user.email.split('@')[0] }}</span>
+              <a href="/logout" class="auth-btn auth-btn-logout">Logout</a>
+            {% else %}
+              <a href="/login"  class="auth-btn auth-btn-login">Login</a>
+              <a href="/signup" class="auth-btn auth-btn-signup">Sign Up</a>
+            {% endif %}
+          </div>
+        </header>
+
+        <!-- ── Welcome & Starter Chips ── -->
+        <div class="chat-welcome" id="chatWelcome">
+          <div class="welcome-greeting">Hello there 👋</div>
+          <h1 class="welcome-headline">I'm <em>MediBot</em> — your AI Health<br>Information Assistant</h1>
+          <p class="welcome-note">⚠️ For informational purposes only. Always consult a licensed doctor.</p>
+
+          <div class="starter-chips">
+            <div class="chip-category">
+              <span class="chip-cat-label">🩺 Symptoms</span>
+              <button class="chip" onclick="askStarter('What are the symptoms of diabetes?')">🩸 Diabetes symptoms</button>
+              <button class="chip" onclick="askStarter('What are signs of an anxiety attack?')">🧠 Anxiety signs</button>
+              <button class="chip" onclick="askStarter('What could cause severe chest pain?')">💓 Chest pain causes</button>
+            </div>
+            <div class="chip-category">
+              <span class="chip-cat-label">💊 Medications</span>
+              <button class="chip" onclick="askStarter('What is ibuprofen used for?')">💊 Ibuprofen</button>
+              <button class="chip" onclick="askStarter('What are the side effects of metformin?')">💉 Metformin effects</button>
+            </div>
+            <div class="chip-category">
+              <span class="chip-cat-label">🌿 Lifestyle</span>
+              <button class="chip" onclick="askStarter('How do I improve my sleep quality?')">😴 Better sleep</button>
+              <button class="chip" onclick="askStarter('How do I manage high blood pressure naturally?')">❤️ Blood pressure</button>
+              <button class="chip" onclick="askStarter('What foods should I eat for a healthy heart?')">🥗 Heart-healthy diet</button>
+            </div>
+            <div class="chip-category">
+              <span class="chip-cat-label">🩹 First Aid</span>
+              <button class="chip" onclick="askStarter('How do I perform CPR?')">🫀 CPR steps</button>
+              <button class="chip" onclick="askStarter('How do I treat a burn at home?')">🔥 Burn treatment</button>
+            </div>
+          </div>
         </div>
-      </div>
 
-    </div><!-- /chat-messages -->
+        <!-- ── Messages ── -->
+        <div class="chat-messages" id="chatMessages">
+          <!-- Typing indicator -->
+          <div class="msg-row bot" id="typingRow" style="display:none;">
+            <div class="msg-avatar bot-av">🩺</div>
+            <div class="typing">
+              <span></span><span></span><span></span>
+              <span class="typing-label">MediBot is thinking…</span>
+            </div>
+          </div>
+        </div>
 
-    <!-- ── Input Bar ── -->
-    <div class="chat-input-wrap">
-      
-      <!-- Image Preview Container -->
-      <div class="preview-wrap" id="previewWrap">
-        <button class="preview-remove" id="previewRemove" title="Remove image">X</button>
-        <img id="previewImg" src="" alt="preview" />
-      </div>
+        <!-- ── Input Bar ── -->
+        <div class="chat-input-wrap">
 
-      <div class="chat-input-row">
+          <!-- Image preview -->
+          <div class="preview-wrap" id="previewWrap">
+            <button class="preview-remove" id="previewRemove" title="Remove image">✕</button>
+            <img id="previewImg" src="" alt="preview" />
+            <div class="preview-notice">⚠️ Image sent for AI analysis — do not upload identifiable personal info</div>
+          </div>
 
-        <!-- Attach -->
-        <button class="attach-btn" title="Attach file" onclick="document.getElementById('fileInput').click()">
-          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66L9.41 17.41a2 2 0 01-2.83-2.83l8.49-8.48"/>
-          </svg>
-        </button>
-        <input type="file" id="fileInput" accept="image/*" style="display:none;" />
+          <div class="chat-input-row">
+            <!-- Attach image -->
+            <button class="attach-btn" title="Attach skin image for analysis" onclick="document.getElementById('fileInput').click()">
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66L9.41 17.41a2 2 0 01-2.83-2.83l8.49-8.48"/>
+              </svg>
+            </button>
+            <input type="file" id="fileInput" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none;" />
 
-        <!-- Text input -->
-        <input
-          class="chat-input"
-          id="chatInput"
-          type="text"
-          placeholder="Type your message..."
-          autocomplete="off"
-        />
+            <!-- Text input -->
+            <input
+              class="chat-input" id="chatInput"
+              type="text" maxlength="500"
+              placeholder="Ask a health question…"
+              autocomplete="off"
+              aria-label="Type your health question"
+            />
 
-        <!-- Send -->
-        <button class="send-btn" id="sendBtn" title="Send">
-          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"/>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-          </svg>
-        </button>
+            <!-- Char counter -->
+            <span class="char-counter" id="charCounter">500</span>
 
-      </div>
-    </div>
+            <!-- Send -->
+            <button class="send-btn" id="sendBtn" title="Send message" aria-label="Send message">
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </div>
 
-  </div><!-- /chat-card -->
+          <div class="input-footer">
+            MediBot can make mistakes. Always verify with a licensed healthcare professional.
+            <a href="/terms" target="_blank">Terms</a> ·
+            <a href="/privacy" target="_blank">Privacy</a>
+          </div>
+        </div>
+
+      </div><!-- /chat-card -->
+    </div><!-- /chat-main -->
+  </div><!-- /app-shell -->
 
   <script>
-    const messagesEl  = document.getElementById('chatMessages');
-    const inputEl     = document.getElementById('chatInput');
-    const fileInput   = document.getElementById('fileInput');
-    const sendBtn     = document.getElementById('sendBtn');
-    const typingRow   = document.getElementById('typingRow');
-    const previewWrap = document.getElementById('previewWrap');
-    const previewImg  = document.getElementById('previewImg');
+    // ══════════════════════════════════════════════════════════════════════════
+    //  MediBot Phase 4 Chat Script
+    // ══════════════════════════════════════════════════════════════════════════
+
+    // ── Disclaimer gate ───────────────────────────────────────────────────────
+    const DISCLAIMER_KEY = 'medibot_disclaimer_v2';
+    const overlay   = document.getElementById('disclaimerOverlay');
+    const discCheck = document.getElementById('discCheck');
+    const agreeBtn  = document.getElementById('agreeBtn');
+
+    if (sessionStorage.getItem(DISCLAIMER_KEY) === 'accepted') {
+      overlay.style.display = 'none';
+    }
+    discCheck.addEventListener('change', () => { agreeBtn.disabled = !discCheck.checked; });
+    agreeBtn.addEventListener('click', () => {
+      if (!discCheck.checked) return;
+      sessionStorage.setItem(DISCLAIMER_KEY, 'accepted');
+      overlay.style.display = 'none';
+    });
+
+    // ── DOM references ────────────────────────────────────────────────────────
+    const messagesEl    = document.getElementById('chatMessages');
+    const inputEl       = document.getElementById('chatInput');
+    const fileInput     = document.getElementById('fileInput');
+    const sendBtn       = document.getElementById('sendBtn');
+    const typingRow     = document.getElementById('typingRow');
+    const previewWrap   = document.getElementById('previewWrap');
+    const previewImg    = document.getElementById('previewImg');
     const previewRemove = document.getElementById('previewRemove');
+    const charCounter   = document.getElementById('charCounter');
+    const chatWelcome   = document.getElementById('chatWelcome');
+    const historySidebar = document.getElementById('historySidebar');
+    const sidebarToggle  = document.getElementById('sidebarToggle');
 
-    let selectedFile = null;
+    let selectedFile        = null;
     let selectedFileDataUrl = null;
+    let isSending           = false;
 
-    // File selection logic
+    // Map from bot message DOM element → message_id from server (for feedback)
+    const messageIdMap = new WeakMap();
+
+    // ── Character counter ─────────────────────────────────────────────────────
+    inputEl.addEventListener('input', () => {
+      const remaining = 500 - inputEl.value.length;
+      charCounter.textContent = remaining;
+      charCounter.className = 'char-counter' +
+        (remaining < 50 ? ' danger' : remaining < 100 ? ' warn' : '');
+    });
+
+    // ── Starter chips ─────────────────────────────────────────────────────────
+    function askStarter(question) {
+      inputEl.value = question;
+      charCounter.textContent = 500 - question.length;
+      inputEl.focus();
+      sendMessage();
+    }
+
+    // ── Auth sidebar (logged-in users) ────────────────────────────────────────
+    const isLoggedIn = {{ 'true' if current_user.is_authenticated else 'false' }};
+    if (isLoggedIn) {
+      historySidebar.classList.remove('hidden');
+      sidebarToggle.style.display = 'inline-flex';
+      loadSidebarHistory();
+    }
+
+    sidebarToggle.addEventListener('click', () => {
+      historySidebar.classList.toggle('hidden');
+    });
+
+    function loadSidebarHistory() {
+      // In a future release, fetch /api/conversations and render here
+      // For now shows a placeholder
+      const el = document.getElementById('sidebarEmpty');
+      if (el) el.textContent = 'Start a conversation below — it will be saved here.';
+    }
+
+    function newConversation() {
+      // Clear chat and reset session
+      messagesEl.innerHTML = '';
+      messagesEl.appendChild(typingRow);
+      chatWelcome.style.display = 'block';
+    }
+
+    // ── File handling ─────────────────────────────────────────────────────────
     fileInput.addEventListener('change', function(e) {
       if (e.target.files && e.target.files[0]) {
-        selectedFile = e.target.files[0];
+        const file = e.target.files[0];
+        if (file.size > 5 * 1024 * 1024) {
+          alert('Image is too large (max 5 MB). Please choose a smaller image.');
+          fileInput.value = '';
+          return;
+        }
+        selectedFile = file;
         const reader = new FileReader();
         reader.onload = function(evt) {
           selectedFileDataUrl = evt.target.result;
           previewImg.src = selectedFileDataUrl;
           previewWrap.style.display = 'flex';
-        }
+        };
         reader.readAsDataURL(selectedFile);
       }
     });
-
-    previewRemove.addEventListener('click', function() {
-      selectedFile = null;
-      selectedFileDataUrl = null;
-      fileInput.value = "";
-      previewWrap.style.display = 'none';
-      previewImg.src = "";
+    previewRemove.addEventListener('click', () => {
+      selectedFile = null; selectedFileDataUrl = null;
+      fileInput.value = ''; previewWrap.style.display = 'none'; previewImg.src = '';
     });
 
+    // ── Helpers ───────────────────────────────────────────────────────────────
     function getTime() {
       const now = new Date();
       return `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
     }
-
     function scrollBottom() {
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    function appendMessage(text, role, imageUrl = null) {
+    // ── Copy to clipboard ─────────────────────────────────────────────────────
+    function copyText(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = '✅';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = '📋'; btn.classList.remove('copied'); }, 2000);
+      }).catch(() => {
+        btn.textContent = '✗';
+        setTimeout(() => { btn.textContent = '📋'; }, 1500);
+      });
+    }
+
+    // ── Feedback (thumbs up/down) → calls /feedback API ──────────────────────
+    function sendFeedback(btn, vote, msgEl) {
+      const msgId = messageIdMap.get(msgEl);
+      // Visual update immediately
+      btn.parentElement.querySelectorAll('.fb-btn').forEach(b => {
+        b.classList.remove('fb-active', 'fb-up', 'fb-down');
+      });
+      btn.classList.add('fb-active', vote === 'up' ? 'fb-up' : 'fb-down');
+
+      if (!msgId) return;   // no server-side ID available — just visual
+
+      fetch('/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message_id: msgId, vote })
+      }).catch(err => console.warn('Feedback error:', err));
+    }
+
+    // ── Append message ────────────────────────────────────────────────────────
+    function appendMessage(text, role, imageUrl = null, serverMsgId = null) {
+      chatWelcome.style.display = 'none';
+
       const row = document.createElement('div');
       row.className = `msg-row ${role}`;
 
@@ -141,78 +572,120 @@
            </div>`
         : `<div class="msg-avatar bot-av">🩺</div>`;
 
-      // construct bubble content
       let bubbleContent = '';
       if (imageUrl) {
-        bubbleContent += `<img src="${imageUrl}" style="max-height: 120px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--teal-accent); display: block;" />`;
+        bubbleContent += `<img src="${imageUrl}" style="max-height:120px;border-radius:8px;margin-bottom:8px;border:1px solid var(--teal-accent);display:block;" alt="Uploaded image" />`;
       }
-      
-      // format text to preserve line breaks
       const formattedText = text.replace(/\n/g, '<br/>');
       bubbleContent += `<span>${formattedText}</span>`;
+
+      // Bottom row: time + copy + feedback
+      const plainText = text;
+      const metaHTML = `
+        <div class="msg-meta">
+          <span class="msg-time">${getTime()}</span>
+          <div class="msg-actions">
+            <button class="copy-btn" title="Copy to clipboard"
+              onclick="copyText(this, ${JSON.stringify(plainText)})">📋</button>
+            ${role === 'bot' ? `
+            <div class="msg-feedback">
+              <button class="fb-btn" title="Helpful"
+                onclick="sendFeedback(this,'up',this.closest('.msg-row'))">👍</button>
+              <button class="fb-btn" title="Not helpful"
+                onclick="sendFeedback(this,'down',this.closest('.msg-row'))">👎</button>
+            </div>` : ''}
+          </div>
+        </div>`;
 
       row.innerHTML = `
         ${avatarHTML}
         <div class="msg-group">
           <div class="bubble">${bubbleContent}</div>
-          <div class="msg-time">${getTime()}</div>
-        </div>
-      `;
+          ${metaHTML}
+        </div>`;
 
       messagesEl.insertBefore(row, typingRow);
+
+      // Store server message ID for feedback
+      if (serverMsgId) messageIdMap.set(row, serverMsgId);
+
       scrollBottom();
+      return row;
     }
 
+    // ── Typing indicator ──────────────────────────────────────────────────────
     function showTyping(show) {
       typingRow.style.display = show ? 'flex' : 'none';
-      scrollBottom();
+      if (show) scrollBottom();
     }
 
+    // ── Send message to backend ───────────────────────────────────────────────
+    let timeoutHandle = null;
     async function botReply(formData) {
       showTyping(true);
-      
+      isSending = true;
+      sendBtn.disabled = true;
+
+      // Show "still working" note after 15s
+      timeoutHandle = setTimeout(() => {
+        const note = document.createElement('div');
+        note.className = 'timeout-note';
+        note.id = 'timeoutNote';
+        note.textContent = '⏳ Still working on your answer — complex questions may take a moment…';
+        messagesEl.insertBefore(note, typingRow);
+        scrollBottom();
+      }, 15000);
+
       try {
-        const response = await fetch("/get", {
-          method: "POST",
-          body: formData
-        });
+        const response = await fetch('/get', { method: 'POST', body: formData });
+        clearTimeout(timeoutHandle);
+        document.getElementById('timeoutNote')?.remove();
+
         const answer = await response.text();
         showTyping(false);
-        appendMessage(answer, 'bot');
+
+        // Server returns message_id in a header for feedback linking
+        const msgId = response.headers.get('X-Message-Id');
+        appendMessage(answer, 'bot', null, msgId);
+
       } catch (error) {
+        clearTimeout(timeoutHandle);
+        document.getElementById('timeoutNote')?.remove();
         showTyping(false);
-        appendMessage("Network error. Please try again.", 'bot');
+        appendMessage('⚠️ Network error. Please check your connection and try again.', 'bot');
         console.error(error);
+      } finally {
+        isSending = false;
+        sendBtn.disabled = false;
+        inputEl.focus();
       }
     }
 
+    // ── Main send ─────────────────────────────────────────────────────────────
     function sendMessage() {
+      if (isSending) return;
       const text = inputEl.value.trim();
       if (!text && !selectedFile) return;
-      
-      // Cache values for UI
-      const imageToRender = selectedFileDataUrl;
-      
-      // Add message to UI
-      appendMessage(text, 'user', imageToRender);
-      
-      // Prepare form data
-      const formData = new FormData();
-      formData.append("msg", text);
-      if (selectedFile) {
-        formData.append("image", selectedFile);
-      }
 
-      // Clear inputs
+      const imageToRender = selectedFileDataUrl;
+      appendMessage(text, 'user', imageToRender);
+
+      const fd = new FormData();
+      fd.append('msg', text);
+      if (selectedFile) fd.append('image', selectedFile);
+
       inputEl.value = '';
-      previewRemove.click(); // resets file state
-      
-      // Call backend
-      botReply(formData);
+      charCounter.textContent = '500';
+      charCounter.className = 'char-counter';
+      previewRemove.click();
+
+      botReply(fd);
     }
 
     sendBtn.addEventListener('click', sendMessage);
-    inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+    inputEl.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    });
   </script>
 
 </body>

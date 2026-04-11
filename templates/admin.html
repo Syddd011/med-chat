@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — MediBot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: #07111f;
+      font-family: 'Inter', sans-serif;
+      color: #e0e0e0;
+    }
+
+    /* ── Top bar ───────────────────────────────────────────────────────── */
+    .topbar {
+      background: #0d1f35;
+      border-bottom: 1px solid rgba(29,184,122,.15);
+      padding: 14px 28px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .topbar .logo { font-size: 22px; font-weight: 700; color: #e8f4f0; }
+    .topbar .logo span { color: #1db87a; }
+    .topbar .badge {
+      font-size: 11px; font-weight: 600; padding: 3px 10px;
+      border-radius: 12px; background: rgba(29,184,122,.15);
+      border: 1px solid rgba(29,184,122,.25); color: #1db87a;
+    }
+    .topbar a {
+      margin-left: auto; font-size: 13px; color: #6a8fa8;
+      text-decoration: none;
+    }
+    .topbar a:hover { color: #1db87a; }
+
+    /* ── Layout ────────────────────────────────────────────────────────── */
+    .page { max-width: 1180px; margin: 0 auto; padding: 32px 28px 60px; }
+    h1 { font-size: 24px; font-weight: 700; color: #e8f4f0; margin-bottom: 6px; }
+    .sub { font-size: 13px; color: #546e7a; margin-bottom: 32px; }
+
+    /* ── Stat cards ────────────────────────────────────────────────────── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 18px;
+      margin-bottom: 36px;
+    }
+    .stat-card {
+      background: #0d1f35;
+      border: 1px solid rgba(29,184,122,.12);
+      border-radius: 16px;
+      padding: 22px 22px 18px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .2s;
+    }
+    .stat-card:hover { border-color: rgba(29,184,122,.3); }
+    .stat-card::after {
+      content: '';
+      position: absolute; right: -20px; top: -20px;
+      width: 100px; height: 100px;
+      background: radial-gradient(circle, rgba(29,184,122,.08), transparent 70%);
+      border-radius: 50%;
+    }
+    .stat-icon { font-size: 26px; margin-bottom: 12px; }
+    .stat-label { font-size: 12px; font-weight: 500; color: #546e7a; text-transform: uppercase; letter-spacing: .06em; }
+    .stat-value { font-size: 32px; font-weight: 700; color: #e8f4f0; line-height: 1; margin: 6px 0 4px; }
+    .stat-sub { font-size: 12px; color: #37474f; }
+
+    /* Satisfaction color */
+    .stat-card.green .stat-value { color: #1db87a; }
+    .stat-card.red   .stat-value { color: #ff6b6b; }
+    .stat-card.blue  .stat-value { color: #64b5f6; }
+
+    /* ── Section titles ────────────────────────────────────────────────── */
+    .section { margin-bottom: 36px; }
+    .section-title {
+      font-size: 14px; font-weight: 600; color: #b0bec5;
+      margin-bottom: 14px; padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-title span { opacity: .6; font-weight: 400; }
+
+    /* ── Intent table ──────────────────────────────────────────────────── */
+    .intent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+    }
+    .intent-row {
+      background: #0d1f35;
+      border: 1px solid rgba(255,255,255,.05);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .intent-name {
+      font-size: 13px; font-weight: 500; color: #90a4ae;
+      flex: 1; text-transform: replace;
+    }
+    .intent-bar-wrap {
+      width: 80px; height: 6px;
+      background: rgba(255,255,255,.05);
+      border-radius: 3px; overflow: hidden;
+    }
+    .intent-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #1db87a, #00b8d4);
+      border-radius: 3px;
+    }
+    .intent-count {
+      font-size: 13px; font-weight: 600; color: #e0f5ee;
+      min-width: 28px; text-align: right;
+    }
+
+    /* ── Recent conversations table ─────────────────────────────────────── */
+    .conv-table { width: 100%; border-collapse: collapse; }
+    .conv-table th {
+      text-align: left; font-size: 11px; font-weight: 600;
+      color: #37474f; text-transform: uppercase; letter-spacing: .06em;
+      padding: 8px 14px 10px; border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .conv-table td {
+      font-size: 13px; color: #78909c;
+      padding: 11px 14px; border-bottom: 1px solid rgba(255,255,255,.03);
+    }
+    .conv-table tr:hover td { background: rgba(255,255,255,.02); }
+    .conv-table .mono { font-family: monospace; font-size: 11px; color: #37474f; }
+    .conv-table .anon { color: #37474f; font-style: italic; }
+    .msg-count-badge {
+      display: inline-flex; align-items: center;
+      background: rgba(29,184,122,.1); border: 1px solid rgba(29,184,122,.2);
+      color: #1db87a; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 10px;
+    }
+
+    /* ── Empty state ────────────────────────────────────────────────────── */
+    .empty { text-align: center; padding: 40px; color: #37474f; font-size: 14px; }
+
+    /* ── Feedback bar ───────────────────────────────────────────────────── */
+    .fb-bar-wrap { height: 8px; background: rgba(255,255,255,.05); border-radius: 4px; overflow: hidden; }
+    .fb-bar-up   { height: 100%; background: #1db87a; border-radius: 4px; display: inline-block; }
+    .fb-meta { display: flex; justify-content: space-between; font-size: 12px; color: #546e7a; margin-top: 6px; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="logo">Medi<span>Bot</span></div>
+    <div class="badge">Admin Dashboard</div>
+    <a href="/">← Back to Chat</a>
+  </div>
+
+  <div class="page">
+    <h1>📊 Dashboard</h1>
+    <p class="sub">Real-time statistics from the MediBot database</p>
+
+    <!-- ── Stat Cards ── -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-label">Registered Users</div>
+        <div class="stat-value">{{ total_users }}</div>
+        <div class="stat-sub">Total accounts</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">💬</div>
+        <div class="stat-label">Conversations</div>
+        <div class="stat-value">{{ total_convs }}</div>
+        <div class="stat-sub">All sessions</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">📨</div>
+        <div class="stat-label">Total Messages</div>
+        <div class="stat-value">{{ total_msgs }}</div>
+        <div class="stat-sub">User + bot combined</div>
+      </div>
+
+      <div class="stat-card blue">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-label">Avg Response Time</div>
+        <div class="stat-value">{{ avg_resp_ms }}</div>
+        <div class="stat-sub">milliseconds</div>
+      </div>
+
+      <div class="stat-card {% if satisfaction >= 70 %}green{% elif satisfaction >= 40 %}{% else %}red{% endif %}">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-label">Satisfaction Rate</div>
+        <div class="stat-value">{{ satisfaction }}%</div>
+        <div class="stat-sub">👍 {{ thumbs_up }} · 👎 {{ thumbs_down }}</div>
+      </div>
+    </div>
+
+    <!-- ── Feedback Bar ── -->
+    {% if (thumbs_up + thumbs_down) > 0 %}
+    <div class="section">
+      <div class="section-title">👍 Feedback Breakdown <span>· {{ thumbs_up + thumbs_down }} rated messages</span></div>
+      <div class="fb-bar-wrap">
+        <div class="fb-bar-up" style="width:{{ satisfaction }}%;"></div>
+      </div>
+      <div class="fb-meta">
+        <span>👍 Helpful: {{ thumbs_up }}</span>
+        <span>{{ satisfaction }}% positive</span>
+        <span>👎 Not helpful: {{ thumbs_down }}</span>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- ── Intent Distribution ── -->
+    <div class="section">
+      <div class="section-title">🧠 Intent Distribution <span>· top detected categories</span></div>
+      {% if intent_stats %}
+        {% set max_count = intent_stats[0][1] %}
+        <div class="intent-grid">
+          {% for intent, count in intent_stats %}
+          <div class="intent-row">
+            <div class="intent-name">{{ intent.replace('_', ' ').title() }}</div>
+            <div class="intent-bar-wrap">
+              <div class="intent-bar" style="width:{{ (count / max_count * 100)|round|int }}%;"></div>
+            </div>
+            <div class="intent-count">{{ count }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty">No conversations yet — intent data will appear here once users start chatting.</div>
+      {% endif %}
+    </div>
+
+    <!-- ── Recent Conversations ── -->
+    <div class="section">
+      <div class="section-title">🕐 Recent Conversations <span>· last 10</span></div>
+      {% if recent_convs %}
+      <table class="conv-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Messages</th>
+            <th>Started</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for conv in recent_convs %}
+          <tr>
+            <td class="mono">{{ conv.id[:8] }}…</td>
+            <td>
+              {% if conv.user %}
+                {{ conv.user.email }}
+              {% else %}
+                <span class="anon">Anonymous</span>
+              {% endif %}
+            </td>
+            <td><span class="msg-count-badge">{{ conv.messages|length }}</span></td>
+            <td>{{ conv.started_at.strftime('%Y-%m-%d %H:%M') }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <div class="empty">No conversations recorded yet.</div>
+      {% endif %}
+    </div>
+
+  </div>
+</body>
+</html>

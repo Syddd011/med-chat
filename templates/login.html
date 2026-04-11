@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — MediBot</title>
+  <meta name="description" content="Sign in to MediBot to access your saved conversation history." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(ellipse 70% 60% at 20% 20%, rgba(13,100,70,.2) 0%, transparent 55%),
+                  radial-gradient(ellipse 60% 70% at 80% 80%, rgba(10,60,120,.22) 0%, transparent 55%),
+                  #07111f;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .auth-card {
+      background: #0d1f35;
+      border: 1px solid rgba(29,184,122,.15);
+      border-radius: 20px;
+      padding: 44px 40px 36px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.5);
+      animation: fadeUp .4s cubic-bezier(.16,1,.3,1) both;
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .auth-logo { text-align: center; font-size: 40px; margin-bottom: 10px; }
+    h1 {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: #e8f4f0;
+      margin-bottom: 4px;
+    }
+    .auth-sub {
+      text-align: center;
+      font-size: 13px;
+      color: #6a8fa8;
+      margin-bottom: 28px;
+    }
+    .flash { padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 18px; }
+    .flash.error   { background: rgba(255,77,79,.1); border: 1px solid rgba(255,77,79,.3); color: #ff6b6b; }
+    .flash.success { background: rgba(29,184,122,.1); border: 1px solid rgba(29,184,122,.3); color: #1db87a; }
+    .flash.info    { background: rgba(0,184,212,.1);  border: 1px solid rgba(0,184,212,.3);  color: #00b8d4; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #90a4ae;
+      margin-bottom: 6px;
+      margin-top: 18px;
+    }
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      background: #0a1628;
+      border: 1px solid rgba(29,184,122,.2);
+      border-radius: 10px;
+      color: #e8f4f0;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    input:focus {
+      border-color: #1db87a;
+      box-shadow: 0 0 0 3px rgba(29,184,122,.12);
+    }
+    .remember-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .remember-row input[type="checkbox"] {
+      accent-color: #1db87a;
+      width: 15px; height: 15px;
+    }
+    .remember-row label {
+      font-size: 13px;
+      color: #6a8fa8;
+      margin: 0;
+    }
+    .btn-primary {
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      background: linear-gradient(135deg, #1db87a, #159960);
+      color: #fff;
+      font-weight: 600;
+      font-size: 15px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn-primary:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .auth-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #6a8fa8;
+    }
+    .auth-footer a { color: #1db87a; text-decoration: none; }
+    .auth-footer a:hover { text-decoration: underline; }
+    .divider {
+      text-align: center;
+      font-size: 12px;
+      margin: 24px 0 0;
+      border-top: 1px solid rgba(255,255,255,.05);
+      padding-top: 20px;
+    }
+    .guest-note {
+      font-size: 12px;
+      text-align: center;
+      color: #4a7090;
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+    .guest-note a { color: #6a8fa8; text-decoration: none; }
+    .guest-note a:hover { color: #1db87a; }
+  </style>
+</head>
+<body>
+  <div class="auth-card">
+    <div class="auth-logo">🩺</div>
+    <h1>Welcome back</h1>
+    <p class="auth-sub">Sign in to MediBot to access your conversation history</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="/login">
+      <label for="email">Email address</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com"
+             required autocomplete="email" />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Your password"
+             required autocomplete="current-password" />
+
+      <div class="remember-row">
+        <input type="checkbox" id="remember" name="remember" />
+        <label for="remember">Keep me signed in</label>
+      </div>
+
+      <button type="submit" class="btn-primary">Sign In</button>
+    </form>
+
+    <div class="auth-footer">
+      Don't have an account? <a href="/signup">Create one — it's free</a>
+    </div>
+
+    <div class="guest-note">
+      <a href="/">← Continue as guest</a> &nbsp;·&nbsp; No account needed to use MediBot
+    </div>
+  </div>
+</body>
+</html>

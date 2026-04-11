@@ -35,11 +35,18 @@ INTENT_MODEL_PATH = os.path.join(MODELS_DIR, "intent_classifier.joblib")
 INTENT_VECTORIZER_PATH = os.path.join(MODELS_DIR, "intent_vectorizer.joblib")
 
 INTENT_LABELS = [
+    "greeting",
+    "farewell",
     "general_info",
     "symptoms",
     "medication_info",
     "lifestyle",
     "emergency_like",
+    "mental_health",
+    "first_aid",
+    "nutrition",
+    "pediatric_health",
+    "women_health",
     "other",
 ]
 

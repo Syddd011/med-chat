@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — MediBot</title>
+  <meta name="description" content="MediBot Privacy Policy. Learn how we handle and protect your data." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0a1628;
+      color: #b0bec5;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.75;
+      min-height: 100vh;
+    }
+    .legal-wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+    .legal-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #00b8d4;
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 32px;
+      transition: opacity 0.2s;
+    }
+    .legal-back:hover { opacity: 0.75; }
+    .legal-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .legal-header .icon { font-size: 48px; margin-bottom: 16px; display: block; }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #e8f0fe;
+      margin-bottom: 8px;
+    }
+    .legal-date { font-size: 13px; color: #546e7a; }
+    h2 {
+      font-size: 19px;
+      font-weight: 600;
+      color: #e8f0fe;
+      margin: 36px 0 12px;
+    }
+    p { margin-bottom: 14px; color: #90a4ae; }
+    ul { padding-left: 22px; margin-bottom: 14px; }
+    li { margin-bottom: 8px; color: #90a4ae; }
+    .highlight-box {
+      background: rgba(0, 229, 160, 0.07);
+      border-left: 4px solid #00e5a0;
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .highlight-box p { color: #e8f0fe; margin: 0; font-weight: 500; }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 14px;
+    }
+    .data-table th {
+      background: rgba(255,255,255,0.05);
+      color: #e8f0fe;
+      font-weight: 600;
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .data-table td {
+      padding: 11px 14px;
+      color: #90a4ae;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+    a { color: #00b8d4; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .legal-footer {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 13px;
+      color: #546e7a;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="legal-wrap">
+    <a href="/" class="legal-back">← Back to MediBot</a>
+
+    <div class="legal-header">
+      <span class="icon">🔒</span>
+      <h1>Privacy Policy</h1>
+      <div class="legal-date">Last updated: April 2026 &nbsp;·&nbsp; Compliant with GDPR & India DPDP Act 2023</div>
+    </div>
+
+    <div class="highlight-box">
+      <p>✅ We are committed to protecting your privacy. This policy explains exactly what data we collect, why, and your rights over it.</p>
+    </div>
+
+    <h2>1. Who We Are</h2>
+    <p>MediBot is an AI-powered medical information service ("we", "us", or "our"). We take your privacy seriously and are committed to complying with applicable data protection laws, including India's Digital Personal Data Protection (DPDP) Act 2023 and the General Data Protection Regulation (GDPR) for EU users.</p>
+
+    <h2>2. What Data We Collect</h2>
+    <table class="data-table">
+      <tr>
+        <th>Data Type</th>
+        <th>What Exactly</th>
+        <th>Why We Collect It</th>
+        <th>Retention</th>
+      </tr>
+      <tr>
+        <td>Chat Messages</td>
+        <td>Text of your questions and our AI responses</td>
+        <td>Improving AI accuracy and safety</td>
+        <td>90 days</td>
+      </tr>
+      <tr>
+        <td>IP Address</td>
+        <td>Your IP (for rate limiting)</td>
+        <td>Preventing abuse and spam</td>
+        <td>24 hours</td>
+      </tr>
+      <tr>
+        <td>Images</td>
+        <td>Skin/medical images you upload</td>
+        <td>AI analysis — passed to vision API</td>
+        <td>Not stored</td>
+      </tr>
+      <tr>
+        <td>Response Time</td>
+        <td>How long the bot took to respond</td>
+        <td>Performance monitoring</td>
+        <td>90 days</td>
+      </tr>
+    </table>
+
+    <h2>3. What We Do NOT Collect</h2>
+    <ul>
+      <li>Your name, email address, or contact details (no account required)</li>
+      <li>Your location (beyond country-level via IP)</li>
+      <li>Financial or payment information</li>
+      <li>Any data from third-party social media platforms</li>
+      <li>Cookies for tracking or profiling purposes</li>
+    </ul>
+
+    <h2>4. How We Use Your Data</h2>
+    <p>We use the data collected to:</p>
+    <ul>
+      <li>Generate accurate AI responses to your health questions</li>
+      <li>Improve the quality and safety of the AI system</li>
+      <li>Detect and prevent misuse, abuse, or emergency situations</li>
+      <li>Monitor system performance and uptime</li>
+    </ul>
+    <p>We do <strong>NOT</strong> sell your data to third parties. We do <strong>NOT</strong> use your data for advertising.</p>
+
+    <h2>5. Third-Party Services</h2>
+    <p>MediBot uses the following third-party services, which may receive some of your data:</p>
+    <ul>
+      <li><strong>OpenRouter.ai</strong> — processes your text queries through AI language models. Their <a href="https://openrouter.ai/privacy" target="_blank">Privacy Policy</a> applies.</li>
+      <li><strong>Pinecone</strong> — stores the medical knowledge base (no personal user data). Their <a href="https://www.pinecone.io/privacy/" target="_blank">Privacy Policy</a> applies.</li>
+      <li><strong>NVIDIA / Vision API</strong> — processes uploaded images for analysis. Do not upload personally identifiable images.</li>
+    </ul>
+
+    <h2>6. Data Security</h2>
+    <p>We implement the following security measures to protect your data:</p>
+    <ul>
+      <li>HTTPS encryption for all data in transit</li>
+      <li>Rate limiting to prevent unauthorized bulk access</li>
+      <li>Security headers (HSTS, CSP, X-Frame-Options) on all responses</li>
+      <li>No plaintext storage of sensitive information</li>
+      <li>Regular security reviews</li>
+    </ul>
+
+    <h2>7. Your Rights</h2>
+    <p>Under GDPR and India's DPDP Act, you have the following rights:</p>
+    <ul>
+      <li><strong>Right to Access</strong> — Request a copy of data we hold about you</li>
+      <li><strong>Right to Deletion</strong> — Request deletion of your interaction logs</li>
+      <li><strong>Right to Correction</strong> — Request correction of inaccurate data</li>
+      <li><strong>Right to Object</strong> — Object to processing of your data</li>
+      <li><strong>Right to Portability</strong> — Request your data in a machine-readable format</li>
+    </ul>
+    <p>To exercise any of these rights, contact us. We will respond within 30 days.</p>
+
+    <h2>8. Children's Privacy</h2>
+    <p>MediBot is not intended for users under 18 years of age. We do not knowingly collect data from children. If you believe a child has provided us with personal information, please contact us immediately so we can delete it.</p>
+
+    <h2>9. Image Data Handling</h2>
+    <p>Images you upload are:</p>
+    <ul>
+      <li>Sent to the AI vision API in real-time for analysis</li>
+      <li><strong>Not permanently stored</strong> on our servers</li>
+      <li>Processed only to generate the health information response</li>
+    </ul>
+    <p>Please do NOT upload images containing your face, medical ID, or any personally identifiable information.</p>
+
+    <h2>10. Cookies</h2>
+    <p>MediBot uses only a single session storage item (<code>medibot_disclaimer_v1</code>) to remember that you have accepted the disclaimer in your current browser session. This is stored locally in your browser and is cleared when you close the tab. We do not use tracking cookies or third-party advertising cookies.</p>
+
+    <h2>11. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy periodically. We will notify users of significant changes by updating the "Last updated" date at the top. Continued use of MediBot after any changes constitutes acceptance of the updated policy.</p>
+
+    <h2>12. Contact Us</h2>
+    <p>If you have any privacy-related questions, concerns, or requests, please contact us through the chatbot interface or at the contact information listed on our platform. We will respond within 30 business days.</p>
+
+    <div class="legal-footer">
+      <a href="/">← Back to MediBot</a> &nbsp;·&nbsp; <a href="/terms">Terms of Service</a>
+      <br><br>
+      © 2026 MediBot. All rights reserved. — Your privacy matters to us.
+    </div>
+  </div>
+</body>
+</html>

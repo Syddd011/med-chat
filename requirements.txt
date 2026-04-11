@@ -1,13 +1,37 @@
-langchain==0.3.26
-flask==3.1.1 
-sentence-transformers==4.1.0
-scikit-learn>=1.4.0
-pandas>=2.0.0
-joblib>=1.3.0
+# ── Core Framework ─────────────────────────────────────────────────────────────
+flask>=3.0.0
+python-dotenv
 
-pypdf==5.6.1 
-python-dotenv==1.1.0
-langchain-pinecone==0.2.8 
-langchain-openai==0.3.24
-langchain-community==0.3.26
--e .
+# ── AI / LLM ───────────────────────────────────────────────────────────────────
+langchain
+langchain-community
+langchain-openai
+langchain-pinecone
+langchain-core
+pinecone
+
+# ── ML / Embeddings ────────────────────────────────────────────────────────────
+sentence-transformers
+scikit-learn
+pandas
+joblib
+
+# ── Security ───────────────────────────────────────────────────────────────────
+flask-limiter>=4.1.1
+
+# ── Database & Auth ────────────────────────────────────────────────────────────
+flask-sqlalchemy>=3.1.1
+flask-login>=0.6.3
+bcrypt>=4.1.2
+
+# ── Caching (Redis optional) ───────────────────────────────────────────────────
+flask-caching>=2.3.0
+
+# ── Image Validation ──────────────────────────────────────────────────────────
+Pillow>=10.2.0
+
+# ── Production Server ─────────────────────────────────────────────────────────
+gunicorn>=21.2.0
+
+# ── PDF Loader ────────────────────────────────────────────────────────────────
+pypdf
