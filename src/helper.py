@@ -1,6 +1,9 @@
 from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
+try:
+    from langchain_huggingface import HuggingFaceEmbeddings          # langchain>=0.2.2
+except ImportError:
+    from langchain_community.embeddings import HuggingFaceEmbeddings  # fallback
 from typing import List
 from langchain_core.documents import Document
 

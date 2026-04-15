@@ -2,15 +2,21 @@
 flask>=3.0.0
 python-dotenv
 
+# ── CSRF Protection ────────────────────────────────────────────────────────────
+flask-wtf>=1.2.1
+
 # ── AI / LLM ───────────────────────────────────────────────────────────────────
-langchain
-langchain-community
-langchain-openai
-langchain-pinecone
-langchain-core
+# Pinned to LangChain 0.3.x family — langchain-core MUST be <1.0.0
+langchain-core>=0.3.66,<1.0.0
+langchain>=0.3,<0.4
+langchain-community>=0.3,<0.4
+langchain-openai>=0.3,<0.4
+langchain-pinecone>=0.2,<0.3
 pinecone
 
 # ── ML / Embeddings ────────────────────────────────────────────────────────────
+# langchain-huggingface is the updated replacement for langchain_community.embeddings
+langchain-huggingface>=0.1,<0.2
 sentence-transformers
 scikit-learn
 pandas
@@ -21,17 +27,23 @@ flask-limiter>=4.1.1
 
 # ── Database & Auth ────────────────────────────────────────────────────────────
 flask-sqlalchemy>=3.1.1
+flask-migrate>=4.0.5
 flask-login>=0.6.3
 bcrypt>=4.1.2
 
-# ── Caching (Redis optional) ───────────────────────────────────────────────────
+# ── Caching (Redis required in multi-worker production) ────────────────────────
 flask-caching>=2.3.0
+redis>=5.0.0
 
 # ── Image Validation ──────────────────────────────────────────────────────────
 Pillow>=10.2.0
 
 # ── Production Server ─────────────────────────────────────────────────────────
 gunicorn>=21.2.0
+gevent>=23.9.1
+
+# ── APM & Observability ───────────────────────────────────────────────────────
+sentry-sdk[flask]>=2.0.0
 
 # ── PDF Loader ────────────────────────────────────────────────────────────────
 pypdf

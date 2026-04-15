@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MediBot — AI Medical Assistant</title>
   <meta name="description" content="MediBot is an AI-powered medical information assistant. Ask health questions and get instant guidance. Not a replacement for professional medical advice." />
+  {# CSRF token available to JavaScript #}
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
@@ -306,13 +308,25 @@
           <!-- Auth buttons -->
           <div class="header-actions">
             {% if current_user.is_authenticated %}
-              <span class="auth-btn auth-btn-user" title="{{ current_user.email }}">👤 {{ current_user.email.split('@')[0] }}</span>
-              <a href="/logout" class="auth-btn auth-btn-logout">Logout</a>
+              <div class="acct-menu-wrap" style="position:relative;">
+                <button class="auth-btn auth-btn-user" id="acctMenuBtn" title="{{ current_user.email }}" onclick="toggleAcctMenu()">👤 {{ current_user.email.split('@')[0] }} ▾</button>
+                <div id="acctMenu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#0d1f35;border:1px solid rgba(29,184,122,.2);border-radius:10px;min-width:160px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.4);overflow:hidden;">
+                  <a href="/export-data" style="display:block;padding:10px 14px;font-size:12px;color:#90e0c0;text-decoration:none;">📥 Export My Data</a>
+                  <a href="/logout" style="display:block;padding:10px 14px;font-size:12px;color:#ff8080;text-decoration:none;border-top:1px solid rgba(255,255,255,.06);">🚪 Logout</a>
+                  <button onclick="confirmDeleteAccount()" style="display:block;width:100%;padding:10px 14px;font-size:12px;color:#ff4444;background:none;border:none;border-top:1px solid rgba(255,255,255,.06);text-align:left;cursor:pointer;font-family:Inter,sans-serif;">🗑️ Delete Account</button>
+                </div>
+              </div>
             {% else %}
               <a href="/login"  class="auth-btn auth-btn-login">Login</a>
               <a href="/signup" class="auth-btn auth-btn-signup">Sign Up</a>
             {% endif %}
           </div>
+          <!-- Hidden delete-account form (POST with CSRF) -->
+          {% if current_user.is_authenticated %}
+          <form id="deleteAcctForm" method="POST" action="/delete-account" style="display:none;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          </form>
+          {% endif %}
         </header>
 
         <!-- ── Welcome & Starter Chips ── -->
@@ -381,14 +395,14 @@
             <!-- Text input -->
             <input
               class="chat-input" id="chatInput"
-              type="text" maxlength="500"
+              type="text" maxlength="2000"
               placeholder="Ask a health question…"
               autocomplete="off"
               aria-label="Type your health question"
             />
 
             <!-- Char counter -->
-            <span class="char-counter" id="charCounter">500</span>
+            <span class="char-counter" id="charCounter">2000</span>
 
             <!-- Send -->
             <button class="send-btn" id="sendBtn" title="Send message" aria-label="Send message">
@@ -452,12 +466,15 @@
     // Map from bot message DOM element → message_id from server (for feedback)
     const messageIdMap = new WeakMap();
 
+    // ── Read CSRF token from meta tag ─────────────────────────────────────────
+    const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
     // ── Character counter ─────────────────────────────────────────────────────
     inputEl.addEventListener('input', () => {
-      const remaining = 500 - inputEl.value.length;
+      const remaining = 2000 - inputEl.value.length;
       charCounter.textContent = remaining;
       charCounter.className = 'char-counter' +
-        (remaining < 50 ? ' danger' : remaining < 100 ? ' warn' : '');
+        (remaining < 100 ? ' danger' : remaining < 300 ? ' warn' : '');
     });
 
     // ── Starter chips ─────────────────────────────────────────────────────────
@@ -539,6 +556,24 @@
       });
     }
 
+    // ── Account menu toggle ────────────────────────────────────────────────────
+    function toggleAcctMenu() {
+      const menu = document.getElementById('acctMenu');
+      if (menu) menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('acctMenu');
+      const btn  = document.getElementById('acctMenuBtn');
+      if (menu && btn && !btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.style.display = 'none';
+      }
+    });
+    function confirmDeleteAccount() {
+      if (confirm('⚠️ Are you sure? This will permanently delete your account and ALL conversation history. This cannot be undone.')) {
+        document.getElementById('deleteAcctForm')?.submit();
+      }
+    }
+
     // ── Feedback (thumbs up/down) → calls /feedback API ──────────────────────
     function sendFeedback(btn, vote, msgEl) {
       const msgId = messageIdMap.get(msgEl);
@@ -552,7 +587,10 @@
 
       fetch('/feedback', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type':  'application/json',
+          'X-CSRFToken':   CSRF_TOKEN,   // CSRF protection on AJAX calls
+        },
         body: JSON.stringify({ message_id: msgId, vote })
       }).catch(err => console.warn('Feedback error:', err));
     }
@@ -619,11 +657,12 @@
       if (show) scrollBottom();
     }
 
-    // ── Send message to backend ───────────────────────────────────────────────
+    // ── Send message to backend (with streaming progressive reveal) ───────────
     let timeoutHandle = null;
+
     async function botReply(formData) {
       showTyping(true);
-      isSending = true;
+      isSending    = true;
       sendBtn.disabled = true;
 
       // Show "still working" note after 15s
@@ -637,16 +676,34 @@
       }, 15000);
 
       try {
-        const response = await fetch('/get', { method: 'POST', body: formData });
+        const response = await fetch('/get', {
+          method:  'POST',
+          body:    formData,
+          headers: { 'X-CSRFToken': CSRF_TOKEN },
+        });
+
         clearTimeout(timeoutHandle);
         document.getElementById('timeoutNote')?.remove();
-
-        const answer = await response.text();
         showTyping(false);
 
-        // Server returns message_id in a header for feedback linking
         const msgId = response.headers.get('X-Message-Id');
-        appendMessage(answer, 'bot', null, msgId);
+
+        // ── Progressive streaming reveal ────────────────────────────────────
+        // The backend returns the full text, but we display it word-by-word
+        // so the user sees progress instead of a blank wait then sudden dump.
+        const fullText = await response.text();
+        const row = appendMessage('', 'bot', null, msgId);
+        const bubble = row.querySelector('.bubble span');
+
+        const words = fullText.split(' ');
+        let displayed = '';
+        for (let i = 0; i < words.length; i++) {
+          displayed += (i === 0 ? '' : ' ') + words[i];
+          bubble.innerHTML = displayed.replace(/\n/g, '<br/>');
+          scrollBottom();
+          // Small delay per word (makes it feel streamed — 12ms avg)
+          await new Promise(r => setTimeout(r, 12));
+        }
 
       } catch (error) {
         clearTimeout(timeoutHandle);
@@ -675,7 +732,7 @@
       if (selectedFile) fd.append('image', selectedFile);
 
       inputEl.value = '';
-      charCounter.textContent = '500';
+      charCounter.textContent = '2000';
       charCounter.className = 'char-counter';
       previewRemove.click();
 

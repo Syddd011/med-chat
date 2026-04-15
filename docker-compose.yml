@@ -4,16 +4,16 @@ version: "3.9"
 #  MediBot — Production Docker Compose Stack
 #
 #  Services:
-#    web      — Flask app (Gunicorn)
+#    web      — Flask app (Gunicorn + gevent)
 #    nginx    — Reverse proxy + SSL termination
-#    db       — PostgreSQL (optional; default is SQLite)
-#    redis    — Response cache (optional; default is memory)
+#    db       — PostgreSQL 15
+#    redis    — Shared cache + rate-limiter state
 #
-#  Quick start (SQLite + memory cache — no extra services):
+#  Quick start (SQLite + memory cache — local dev only):
 #    docker-compose up web
 #
 #  Full production stack:
-#    docker-compose up
+#    docker-compose --env-file .env up -d
 # ═══════════════════════════════════════════════════════════════════════════════
 
 services:
@@ -25,17 +25,19 @@ services:
     env_file: .env
     environment:
       - FLASK_DEBUG=false
+      - FLASK_ENV=production
       - DATABASE_URL=postgresql://medibot:${POSTGRES_PASSWORD}@db:5432/medibot
       - REDIS_URL=redis://redis:6379/0
-    ports:
-      - "8080:8080"
+    # Do NOT expose 8080 to the internet — only Nginx should connect to it
+    expose:
+      - "8080"
     volumes:
-      - ./flask.log:/app/flask.log
+      - app_logs:/app/logs
     depends_on:
       db:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "python", "-c",
              "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"]
@@ -46,16 +48,18 @@ services:
 
   # ── Nginx Reverse Proxy ─────────────────────────────────────────────────────
   nginx:
-    image: nginx:alpine
+    image: nginx:1.27-alpine
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./ssl:/etc/nginx/ssl:ro        # Mount your SSL certs here
+      - ./ssl:/etc/nginx/ssl:ro          # Mount your SSL certs here
+      - /var/www/certbot:/var/www/certbot # Let's Encrypt ACME challenge
     depends_on:
-      - web
+      web:
+        condition: service_healthy
 
   # ── PostgreSQL Database ─────────────────────────────────────────────────────
   db:
@@ -72,16 +76,44 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    # Do NOT expose port 5432 to the internet
+    expose:
+      - "5432"
 
-  # ── Redis Cache ─────────────────────────────────────────────────────────────
+  # ── Redis Cache + Rate Limiter ───────────────────────────────────────────────
   redis:
     image: redis:7-alpine
     restart: unless-stopped
-    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    command: >
+      redis-server
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+      --requirepass ${REDIS_PASSWORD:-changeme_redis_password}
+      --bind 0.0.0.0
     volumes:
       - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    expose:
+      - "6379"
 
-# ── Volumes ─────────────────────────────────────────────────────────────────
+  # ── DB Migration runner (runs once at start) ─────────────────────────────────
+  migrate:
+    build: .
+    command: flask db upgrade
+    env_file: .env
+    environment:
+      - DATABASE_URL=postgresql://medibot:${POSTGRES_PASSWORD}@db:5432/medibot
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+# ── Named Volumes ─────────────────────────────────────────────────────────────
 volumes:
   postgres_data:
   redis_data:
+  app_logs:

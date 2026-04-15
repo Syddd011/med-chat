@@ -1,0 +1,51 @@
+MediBot Application Developer Guidance
+
+=========================================
+1. Application Overview
+=========================================
+This is a Flask-based medical chatbot application that features:
+- A user-facing chat portal.
+- An admin dashboard for monitoring usage, user satisfaction, and AI intent statistics.
+- Pinecone vector store and OpenAI models for Retrieval-Augmented Generation (RAG).
+- NVIDIA Nemotron Vision model for image analysis.
+
+=========================================
+2. Portals and Dashboards
+=========================================
+
+User Chat Portal:
+- Route: `/` (Root directory)
+- Template: `templates/chat.html`
+- This is where users interact with the chatbot, upload images for analysis, and query medical information.
+
+Admin Analysis Dashboard:
+- Route: `/admin`
+- Template: `templates/admin.html`
+- This is the analytics portal designed for administrators to view key performance metrics.
+
+Features of the Admin Dashboard:
+- Total number of users, conversations, and messages.
+- User satisfaction metrics (thumbs up/down ratings).
+- Intent tracking (which queries are the most frequent, such as medications, symptoms, etc.).
+- Performance tracking (average response time in milliseconds).
+- 10 most recent conversations.
+
+=========================================
+3. How to Access the Admin Dashboard
+=========================================
+The `/admin` portal is securely locked behind Flask-Login and an explicit email check.
+
+To grant standard access to the dashboard:
+1. Ensure the developer creates a standard user account via the `/signup` route.
+2. In the deployment environment, set the `ADMIN_EMAIL` environment variable to match the email used in step 1.
+   For example, in a `.env` file or environment settings: 
+   `ADMIN_EMAIL=developer@example.com`
+3. Log in with that email at `/login`.
+4. Navigate to `/admin`.
+
+=========================================
+4. Maintenance & Database
+=========================================
+- Database: Uses SQLAlchemy. By default, it runs a local `medibot.db` SQLite database but configures cleanly to PostgreSQL using the `DATABASE_URL` environment variable if deployed on Heroku/Render.
+- Chat history and caching: Uses a combination of PostgreSQL/SQLite for chats and Redis/SimpleCache for RAG output caching (configured via `REDIS_URL`).
+- ML Models caching: Local binaries are stored under `models/*.joblib`. Use `src/ml/train_intent_classifier.py` to regenerate the intent classification models with new dataset modifications.

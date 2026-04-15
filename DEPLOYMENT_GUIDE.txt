@@ -1,0 +1,688 @@
+================================================================================
+       MEDIBOT — COMPLETE DEPLOYMENT & MANAGEMENT GUIDE
+       Step-by-Step: From Zero to Open-Internet Production
+================================================================================
+
+Written for: Windows developer, deploying to Linux cloud server
+Project:     c:\projectt\med-chat   (your local machine)
+Server:      Ubuntu 22.04 LTS on AWS / DigitalOcean / Render / Railway
+
+TABLE OF CONTENTS
+-----------------
+  PART A — LOCAL SETUP & TESTING
+    A1. First-Time Local Setup
+    A2. Running Locally (Development)
+    A3. Running Tests
+
+  PART B — PRE-DEPLOYMENT CHECKLIST
+    B1. Rotate Compromised API Keys
+    B2. Generate Secrets
+    B3. Configure Your .env File
+
+  PART C — CLOUD SERVER DEPLOYMENT (DOCKER)
+    C1. Provision a Cloud Server
+    C2. Install Docker on Server
+    C3. Set Up SSL Certificate (HTTPS)
+    C4. Transfer Project to Server
+    C5. Configure Production .env
+    C6. Run Database Migrations
+    C7. Launch the Full Stack
+    C8. Verify Everything Works
+
+  PART D — EASY DEPLOYMENT ALTERNATIVES (No DevOps required)
+    D1. Deploy on Railway (Easiest)
+    D2. Deploy on Render
+    D3. Deploy on DigitalOcean App Platform
+
+  PART E — DOMAIN & DNS SETUP
+    E1. Point Your Domain to the Server
+
+  PART F — ONGOING MANAGEMENT
+    F1. Updating the Application
+    F2. Viewing Logs
+    F3. Database Backups
+    F4. Monitoring with Sentry
+    F5. Adding New Knowledge to the Chatbot
+    F6. Managing Users (Admin Dashboard)
+    F7. Rotating API Keys
+    F8. Scaling Up
+
+================================================================================
+PART A — LOCAL SETUP & TESTING
+================================================================================
+
+A1. FIRST-TIME LOCAL SETUP
+---------------------------
+Run these commands on your Windows machine (in the project folder):
+
+  1. Activate your Conda environment:
+       conda activate medibot
+
+  2. Install all dependencies (including new ones from upgrade):
+       pip install -r requirements.txt
+
+  3. Copy the example env file and fill it in:
+       copy .env.example .env
+       notepad .env
+
+  4. Generate a strong secret key and paste it into .env:
+       python -c "import secrets; print(secrets.token_hex(32))"
+     → Copy the output and set: FLASK_SECRET_KEY=<paste here>
+
+  5. Initialize the database migration system (first time only):
+       flask db init
+       flask db migrate -m "Initial schema"
+       flask db upgrade
+
+  6. Train the intent classifier (if models folder is empty):
+       python src/ml/train_intent_classifier.py
+
+  7. Index documents into Pinecone (if Pinecone index is empty):
+       python store_index.py
+
+
+A2. RUNNING LOCALLY (DEVELOPMENT)
+-----------------------------------
+  Start the app in dev mode:
+    python app.py
+
+  OR with auto-reload:
+    flask run --port 8080 --debug
+
+  Open in browser:  http://localhost:8080
+
+
+A3. RUNNING TESTS
+------------------
+  Run full test suite:
+    conda run -n medibot pytest tests/ -v
+
+  Run with coverage report:
+    conda run -n medibot pytest tests/ -v --cov=. --cov-report=term-missing
+
+  Expected result: All tests should PASS before you deploy.
+
+
+================================================================================
+PART B — PRE-DEPLOYMENT CHECKLIST (DO BEFORE ANYTHING ELSE)
+================================================================================
+
+B1. ROTATE YOUR COMPROMISED API KEYS  ← DO THIS NOW
+------------------------------------------------------
+Your .env file was committed to git history. Those keys are compromised.
+
+  Step 1: Rotate Pinecone API Key
+    → Go to: https://app.pinecone.io → API Keys → Delete old key → Create new
+
+  Step 2: Rotate OpenRouter API Key
+    → Go to: https://openrouter.ai/keys → Delete old key → Create new
+
+  Step 3: Remove .env from all git history:
+    (Run in Git Bash or WSL)
+    pip install git-filter-repo
+    git filter-repo --path .env --invert-paths --force
+    git push origin --force --all
+    git push origin --force --tags
+
+  Step 4: Verify .env is now gitignored:
+    git status
+    → medibot.db and .env should NOT appear in staged changes
+
+
+B2. GENERATE ALL PRODUCTION SECRETS
+--------------------------------------
+  # Flask Secret Key
+  python -c "import secrets; print('FLASK_SECRET_KEY=' + secrets.token_hex(32))"
+
+  # PostgreSQL password (for Docker / cloud DB)
+  python -c "import secrets; print('POSTGRES_PASSWORD=' + secrets.token_urlsafe(24))"
+
+  # Redis password
+  python -c "import secrets; print('REDIS_PASSWORD=' + secrets.token_urlsafe(20))"
+
+  Save these values — you'll need them in your server .env file.
+
+
+B3. CONFIGURE YOUR .env FILE
+------------------------------
+  Your .env should look like this for production:
+
+    FLASK_SECRET_KEY=<your 64-char hex key from step B2>
+    FLASK_DEBUG=false
+    FLASK_ENV=production
+
+    PINECONE_API_KEY=<your NEW Pinecone key>
+    OPENAI_API_KEY=<your NEW OpenRouter key>
+
+    DATABASE_URL=postgresql://medibot:<POSTGRES_PASSWORD>@db:5432/medibot
+
+    REDIS_URL=redis://:changeme_redis_password@redis:6379/0
+
+    ADMIN_EMAIL=<your personal email>
+    SENTRY_DSN=<from sentry.io — see Part F4>
+
+    POSTGRES_PASSWORD=<your password from step B2>
+
+
+================================================================================
+PART C — CLOUD SERVER DEPLOYMENT (DOCKER — Recommended)
+================================================================================
+
+C1. PROVISION A CLOUD SERVER
+------------------------------
+  Recommended: DigitalOcean Droplet (cheapest) or AWS EC2
+
+  Minimum specs:
+    - 2 GB RAM, 1 vCPU, 25 GB SSD
+    - Ubuntu 22.04 LTS
+    - Cost: ~$12/month (DigitalOcean) or ~$15/month (AWS t3.small)
+
+  For India (DPDP compliance — data in India):
+    - DigitalOcean Bangalore region  (blr1)
+    - AWS Mumbai region              (ap-south-1)
+
+  When creating the server:
+    - Enable SSH key authentication (do NOT use password login)
+    - Open ports 80 and 443 in the firewall
+
+
+C2. INSTALL DOCKER ON THE SERVER
+----------------------------------
+  SSH into your server:
+    ssh root@<your-server-ip>
+
+  Install Docker and Docker Compose:
+    curl -fsSL https://get.docker.com | sh
+    apt-get install -y docker-compose-plugin
+    systemctl enable docker
+    systemctl start docker
+
+  Verify:
+    docker --version
+    docker compose version
+
+
+C3. SET UP SSL CERTIFICATE (HTTPS — Free with Let's Encrypt)
+--------------------------------------------------------------
+  IMPORTANT: You need a domain name pointing to your server first (see Part E).
+
+  Install Certbot:
+    apt-get install -y certbot
+
+  Get your certificate (replace yourdomain.com):
+    certbot certonly --standalone \
+      -d yourdomain.com \
+      -d www.yourdomain.com \
+      --email your@email.com \
+      --agree-tos --non-interactive
+
+  Copy certs to the project folder:
+    mkdir -p /app/med-chat/ssl
+    cp /etc/letsencrypt/live/yourdomain.com/fullchain.pem /app/med-chat/ssl/
+    cp /etc/letsencrypt/live/yourdomain.com/privkey.pem   /app/med-chat/ssl/
+    chmod 600 /app/med-chat/ssl/*.pem
+
+  Set up auto-renewal (runs twice daily, renews when cert is near expiry):
+    echo "0 */12 * * * root certbot renew --quiet --deploy-hook 'docker compose -f /app/med-chat/docker-compose.yml restart nginx'" > /etc/cron.d/certbot-renewal
+
+
+C4. TRANSFER PROJECT TO SERVER
+--------------------------------
+  Option A — Using Git (recommended):
+    On the server:
+      git clone https://github.com/<your-username>/med-chat.git /app/med-chat
+      cd /app/med-chat
+
+  Option B — Using SCP (copy from Windows):
+    In PowerShell on your Windows machine:
+      scp -r c:\projectt\med-chat root@<server-ip>:/app/med-chat
+
+  IMPORTANT: Do NOT copy your local .env file to the server.
+    You will create a fresh .env on the server in the next step.
+
+
+C5. CONFIGURE PRODUCTION .env ON THE SERVER
+---------------------------------------------
+  On the server:
+    cd /app/med-chat
+    nano .env
+
+  Paste your production values (from Part B3) and save.
+  Set strict permissions so only root can read it:
+    chmod 600 .env
+
+  Update nginx.conf with your actual domain:
+    sed -i 's/yourdomain.com/<your-actual-domain.com>/g' nginx.conf
+
+
+C6. RUN DATABASE MIGRATIONS
+-----------------------------
+  The Docker Compose file includes an automatic migration service.
+  It runs "flask db upgrade" before the app starts.
+
+  If you need to run migrations manually:
+    docker compose run --rm web flask db upgrade
+
+
+C7. LAUNCH THE FULL STACK
+---------------------------
+  Build and start all services in the background:
+    cd /app/med-chat
+    docker compose up -d --build
+
+  This starts:
+    ✅ PostgreSQL database
+    ✅ Redis cache + rate-limiter
+    ✅ Flask app (Gunicorn + gevent workers)
+    ✅ Nginx reverse proxy (port 80 → HTTPS redirect, port 443 → Flask)
+    ✅ Auto DB migration runner
+
+  Check all containers are running:
+    docker compose ps
+
+  All 4 services should show "Up" or "healthy".
+
+
+C8. VERIFY EVERYTHING WORKS
+-----------------------------
+  1. Check health endpoint:
+       curl https://yourdomain.com/health
+       Expected: {"status":"ok","pinecone":"connected",...}
+
+  2. Open the site in your browser:
+       https://yourdomain.com
+       → Should show the MediBot chat interface
+       → Should show the disclaimer modal on first visit
+       → Emergency banner should be visible at the top
+
+  3. Send a test message:
+       Type: "What are symptoms of diabetes?"
+       → Should get a medical response within 15 seconds
+
+  4. Test emergency detection:
+       Type: "I am having chest pain"
+       → Should IMMEDIATELY show emergency numbers (108, 911, 112)
+       → Should NOT call the LLM
+
+  5. Test rate limiting:
+       Send 21 messages in under 1 minute
+       → Should get "You are sending messages too fast" on the 21st
+
+
+================================================================================
+PART D — EASY DEPLOYMENT ALTERNATIVES (No server management)
+================================================================================
+
+D1. DEPLOY ON RAILWAY (Easiest — Recommended for Beginners)
+------------------------------------------------------------
+  Cost: ~$5/month for a hobby plan
+  Time: 15 minutes
+  HIPAA: NO (use only for demos, not real patient data)
+
+  Steps:
+    1. Go to https://railway.app and sign in with GitHub
+    2. Click "New Project" → "Deploy from GitHub repo"
+    3. Select your med-chat repository
+    4. Railway auto-detects the Dockerfile
+    5. Go to Variables tab → Add each variable from your .env file
+    6. Click Deploy
+    7. Railway gives you a free HTTPS URL automatically
+
+  Add PostgreSQL:
+    Click "New" → "Database" → "PostgreSQL"
+    Railway sets DATABASE_URL automatically
+
+  Add Redis:
+    Click "New" → "Database" → "Redis"
+    Railway sets REDIS_URL automatically
+
+
+D2. DEPLOY ON RENDER
+----------------------
+  Cost: Free tier (spins down after 15 min idle) / $7/month paid
+  Time: 20 minutes
+
+  Steps:
+    1. Go to https://render.com
+    2. "New" → "Web Service" → Connect GitHub → Select med-chat
+    3. Set:
+         Runtime: Docker
+         Region: Singapore (closest to India) or Oregon
+    4. Add Environment Variables (same as .env)
+    5. Add a PostgreSQL database from Render dashboard
+    6. Add a Redis instance from Render dashboard
+    7. Click "Create Web Service"
+
+  Free tier note: App sleeps after 15 min of inactivity.
+    First request after sleep takes 30-60 seconds. Upgrade to Starter ($7/mo)
+    to keep it always-on.
+
+
+D3. DEPLOY ON DIGITALOCEAN APP PLATFORM
+-----------------------------------------
+  Cost: ~$12/month
+  Time: 30 minutes
+  Better for India: Use Bangalore (BLR) region for DPDP compliance
+
+  Steps:
+    1. Go to https://cloud.digitalocean.com/apps
+    2. "Create App" → GitHub → Select med-chat
+    3. DO auto-detects Dockerfile
+    4. Add environment variables
+    5. Add a managed PostgreSQL database ($15/month)
+    6. Add a managed Redis cache ($10/month)
+    7. Deploy
+
+
+================================================================================
+PART E — DOMAIN & DNS SETUP
+================================================================================
+
+E1. POINT YOUR DOMAIN TO THE SERVER
+--------------------------------------
+  If you have a domain (e.g., from GoDaddy, Namecheap, Google Domains):
+
+  Step 1: Get your server's IP address:
+    In your server terminal: curl ifconfig.me
+
+  Step 2: In your domain registrar's DNS settings, add:
+    Type: A     Name: @              Value: <your-server-ip>
+    Type: A     Name: www            Value: <your-server-ip>
+
+  Step 3: Wait 5-30 minutes for DNS propagation.
+
+  Step 4: Test:
+    ping yourdomain.com
+    → Should resolve to your server IP
+
+  Free domain options:
+    - .me.uk, .tk, .ml etc. (free but unreliable)
+    - freenom.com
+    - Or buy a .in domain for ~₹500/year from GoDaddy India
+
+
+================================================================================
+PART F — ONGOING MANAGEMENT
+================================================================================
+
+F1. UPDATING THE APPLICATION
+------------------------------
+  When you make code changes locally:
+
+  1. Commit and push to GitHub:
+       git add .
+       git commit -m "Description of changes"
+       git push origin main
+
+  2. On the server — pull and rebuild:
+       cd /app/med-chat
+       git pull origin main
+       docker compose up -d --build web
+       docker compose run --rm web flask db upgrade
+
+  3. Check logs to confirm it started:
+       docker compose logs web --tail=50
+
+  Zero-downtime tip: Docker Compose restarts containers one at a time,
+  so users won't see a full outage during updates.
+
+
+F2. VIEWING LOGS
+-----------------
+  View all service logs:
+    docker compose logs -f
+
+  View only Flask app logs:
+    docker compose logs -f web
+
+  View only Nginx access logs:
+    docker compose logs -f nginx
+
+  View last 100 lines:
+    docker compose logs web --tail=100
+
+  Search for errors:
+    docker compose logs web | grep ERROR
+
+  Logs are also visible in your Sentry dashboard (see F4).
+
+
+F3. DATABASE BACKUPS
+---------------------
+  Manual backup:
+    docker compose exec db pg_dump -U medibot medibot > backup_$(date +%Y%m%d).sql
+
+  Restore from backup:
+    cat backup_20260415.sql | docker compose exec -T db psql -U medibot medibot
+
+  Automate daily backups (add to server crontab):
+    crontab -e
+
+  Add this line:
+    0 2 * * * cd /app/med-chat && docker compose exec -T db pg_dump -U medibot medibot > /backups/medibot_$(date +\%Y\%m\%d).sql
+
+  Create backup folder:
+    mkdir -p /backups
+
+  Keep only last 30 days of backups:
+    0 3 * * * find /backups -name "medibot_*.sql" -mtime +30 -delete
+
+  Cloud backup (recommended):
+    Upload daily backups to AWS S3 or Backblaze B2 for offsite storage.
+    Install: apt-get install awscli
+    Then: aws s3 cp /backups/medibot_$(date +%Y%m%d).sql s3://your-bucket/backups/
+
+
+F4. MONITORING WITH SENTRY (Free Error Tracking)
+--------------------------------------------------
+  What Sentry does:
+    - Alerts you by email when Python errors occur
+    - Shows the full stack trace, user info, and request details
+    - Tracks error frequency and trends
+
+  Setup (5 minutes):
+    1. Go to https://sentry.io → Sign up (free)
+    2. Create a new project → Select "Flask"
+    3. Copy the DSN URL they give you
+    4. In your server .env file:
+         SENTRY_DSN=https://xxx@yyy.ingest.sentry.io/zzz
+    5. Restart the app:
+         docker compose up -d web
+
+  Verify Sentry is working:
+    A test error is automatically sent during Sentry SDK init.
+    Check your Sentry dashboard for the first event.
+
+  Set up alerts:
+    In Sentry → Alerts → Create Alert → "Any new issue" → Email: your@email.com
+
+
+F5. ADDING NEW MEDICAL KNOWLEDGE TO THE CHATBOT
+-------------------------------------------------
+  The chatbot uses a Pinecone vector database for its knowledge.
+  To add new information:
+
+  Option A — Add a new TXT file (easiest):
+    1. Create a new file: data/new_topic_reference.txt
+    2. Write plain English medical content in it
+    3. Re-index everything:
+         python store_index.py
+    4. The bot will use the new knowledge immediately (no restart needed)
+
+  Option B — Add a PDF:
+    1. Place the PDF in: data/
+    2. Re-run the indexer:
+         python store_index.py
+
+  Option C — Update intent training data:
+    1. Edit: data/intent_dataset.csv
+       Add new rows with: text, label
+    2. Retrain the classifier:
+         python src/ml/train_intent_classifier.py
+    3. Restart the app:
+         docker compose restart web
+
+
+F6. MANAGING USERS (ADMIN DASHBOARD)
+--------------------------------------
+  Access the admin dashboard:
+    Go to: https://yourdomain.com/admin
+    (Only works if you are logged in with the email set in ADMIN_EMAIL)
+
+  What you can see on the admin dashboard:
+    - Total users, conversations, and messages
+    - Satisfaction score (thumbs up ÷ all rated)
+    - Intent distribution (which topics users ask most)
+    - Average response time in milliseconds
+    - Recent conversations
+
+  Manually delete a user (if needed):
+    Connect to the database:
+      docker compose exec db psql -U medibot medibot
+    
+    Find user:
+      SELECT id, email, created_at FROM users WHERE email='user@example.com';
+    
+    Delete user (cascades to all conversations and messages):
+      DELETE FROM users WHERE email='user@example.com';
+      \q
+
+
+F7. ROTATING API KEYS
+-----------------------
+  When to do this:
+    - Suspected compromise
+    - Every 90 days (security best practice)
+    - When a team member with access leaves
+
+  Steps:
+    1. Create the new key at Pinecone/OpenRouter
+    2. Edit the server .env:
+         nano /app/med-chat/.env
+    3. Update the key values
+    4. Restart the Flask app to pick up the new keys:
+         docker compose up -d web
+    5. Verify the health endpoint works:
+         curl https://yourdomain.com/health
+    6. Delete the old key from Pinecone/OpenRouter dashboard
+
+
+F8. SCALING UP (When You Have More Users)
+-------------------------------------------
+  Signs you need to scale:
+    - Response time consistently > 15 seconds
+    - Docker health check fails repeatedly
+    - Users report "too slow" or timeouts
+
+  Scale 1 — Add more Gunicorn workers (free):
+    In .env: GUNICORN_WORKERS=8
+    Restart: docker compose up -d web
+
+  Scale 2 — Bigger server (vertical scaling):
+    Upgrade to a 4 GB RAM / 2 vCPU droplet
+    Cost: ~$24/month on DigitalOcean
+
+  Scale 3 — Multiple servers (horizontal scaling):
+    - Use a load balancer (DigitalOcean LB: $12/month)
+    - Redis is already shared (all workers use the same Redis)
+    - PostgreSQL is already shared (single managed DB)
+    - Deploy 2-3 identical Docker hosts
+    - Point the load balancer at all of them
+
+  Scale 4 — Managed cloud (enterprise):
+    - AWS ECS Fargate with auto-scaling
+    - Costs more (~$100+/month) but handles any load automatically
+
+
+================================================================================
+QUICK REFERENCE — MOST USED COMMANDS
+================================================================================
+
+  Start everything:          docker compose up -d
+  Stop everything:           docker compose down
+  Restart Flask only:        docker compose restart web
+  View Flask logs:           docker compose logs -f web
+  Run DB migration:          docker compose run --rm web flask db upgrade
+  Open DB console:           docker compose exec db psql -U medibot medibot
+  Backup database:           docker compose exec -T db pg_dump -U medibot medibot > backup.sql
+  Check container status:    docker compose ps
+  Check server resources:    docker stats
+  Update & redeploy:         git pull && docker compose up -d --build web
+  Test health endpoint:      curl https://yourdomain.com/health
+
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+PROBLEM: App won't start — "FLASK_SECRET_KEY is not set"
+FIX:     Edit your .env file and add a value for FLASK_SECRET_KEY
+         Generate one: python -c "import secrets; print(secrets.token_hex(32))"
+
+PROBLEM: "Cannot connect to Pinecone"
+FIX:     1. Check PINECONE_API_KEY in .env is correct
+         2. Check Pinecone index name is "medical-chatbot" (case-sensitive)
+         3. curl https://api.pinecone.io to confirm connectivity
+
+PROBLEM: Database connection error
+FIX:     1. Run: docker compose ps db — is it "healthy"?
+         2. Check DATABASE_URL in .env matches docker-compose.yml
+         3. Wait 60 seconds — PostgreSQL can be slow to start
+
+PROBLEM: 502 Bad Gateway from Nginx
+FIX:     1. Docker Flask app hasn't started yet — wait 90 seconds
+         2. Run: docker compose logs web to see errors
+         3. Check Flask health: docker compose exec web curl localhost:8080/health
+
+PROBLEM: SSL certificate error
+FIX:     1. Ensure your domain DNS is pointing to the server IP
+         2. Run: certbot certonly --standalone -d yourdomain.com
+         3. Copy new .pem files to /app/med-chat/ssl/
+         4. Restart Nginx: docker compose restart nginx
+
+PROBLEM: "Too many requests" rate limit
+FIX:     This is normal — it's working as designed.
+         If legitimate users hit it, increase limits in app.py:
+         default_limits=["500 per day", "60 per hour"]
+
+PROBLEM: Chat responses are empty or "I don't know"
+FIX:     1. Check RAG chain: curl .../health — is pinecone "connected"?
+         2. Re-run the indexer: python store_index.py
+         3. Check if Pinecone index has vectors: check in Pinecone dashboard
+
+PROBLEM: Image analysis not working
+FIX:     1. Check OPENAI_API_KEY (OpenRouter key) is valid
+         2. Check OpenRouter account has credits
+         3. The vision model may be temporarily unavailable — try again
+
+
+================================================================================
+COMPLIANCE REMINDERS (Legal Requirements)
+================================================================================
+
+For INDIA (DPDP Act 2023):
+  ✅ Data must be stored in India (use ap-south-1 or blr1 region)
+  ✅ Consent modal is live (already implemented)
+  ✅ Data export endpoint is live (/export-data)
+  ✅ Account deletion endpoint is live (/delete-account)
+  ⬜ Add Grievance Officer contact to Privacy page
+  ⬜ Add Privacy Policy in Hindi
+  ⬜ Implement 90-day data auto-deletion (add cron job)
+
+For USA (HIPAA — if users submit health data):
+  ⬜ Sign BAA with your cloud provider (AWS, GCP)
+  ⬜ Sign BAA with OpenRouter or switch to OpenAI with enterprise agreement
+  ⬜ Sign BAA with Pinecone Enterprise
+  ⬜ Enable CloudTrail / audit logging
+  ⬜ Annual risk assessment documentation
+
+IMPORTANT: This chatbot is for informational purposes only.
+  It does NOT collect Protected Health Information (PHI) as defined by HIPAA
+  as long as users follow the disclaimer and don't enter their personal
+  medical records. The disclaimer modal and Terms of Service establish this.
+
+
+================================================================================
+END OF DEPLOYMENT GUIDE
+Generated: April 2026 | MediBot v1.0 Production
+================================================================================
