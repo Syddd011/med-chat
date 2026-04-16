@@ -498,17 +498,71 @@
     });
 
     function loadSidebarHistory() {
-      // In a future release, fetch /api/conversations and render here
-      // For now shows a placeholder
-      const el = document.getElementById('sidebarEmpty');
-      if (el) el.textContent = 'Start a conversation below — it will be saved here.';
+      fetch('/api/conversations')
+        .then(res => res.json())
+        .then(data => {
+          const listGroup = document.getElementById('sidebarList');
+          if (!data || data.length === 0) {
+            listGroup.innerHTML = '<div class="sidebar-empty" id="sidebarEmpty">Start a conversation below — it will be saved here.</div>';
+            return;
+          }
+          listGroup.innerHTML = '';
+          data.forEach(chat => {
+            const item = document.createElement('div');
+            item.className = 'sidebar-item';
+            item.dataset.id = chat.id;
+            item.textContent = chat.title || 'New Chat';
+            item.addEventListener('click', () => loadConversation(chat.id, item));
+            listGroup.appendChild(item);
+          });
+        })
+        .catch(err => console.error("Error loading history:", err));
+    }
+
+    async function loadConversation(convId, sidebarItem) {
+      if (isSending) return; // prevent collision if currently generating
+      
+      // Update sidebar visual active state
+      document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+      if (sidebarItem) sidebarItem.classList.add('active');
+
+      try {
+        const res = await fetch(`/api/conversations/${convId}`);
+        if (!res.ok) throw new Error("Fetch failed");
+        
+        const msgs = await res.json();
+        
+        // Refresh UI
+        messagesEl.innerHTML = '';
+        chatWelcome.style.display = 'none';
+        
+        // Render historical messages sequentially to avoid layout thrashing
+        msgs.forEach(m => {
+          let content = m.content;
+          if (content === "[image]") content = "🖼️ [Image attachment]";
+          appendMessage(content, m.role, null, m.id);
+        });
+        
+        // Ensure typing indicator stays at the end
+        messagesEl.appendChild(typingRow);
+        scrollBottom();
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     function newConversation() {
-      // Clear chat and reset session
-      messagesEl.innerHTML = '';
-      messagesEl.appendChild(typingRow);
-      chatWelcome.style.display = 'block';
+      if (isSending) return;
+      document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+      
+      fetch('/api/conversations/new', { 
+        method: 'POST',
+        headers: { 'X-CSRFToken': CSRF_TOKEN }
+      }).then(() => {
+        messagesEl.innerHTML = '';
+        messagesEl.appendChild(typingRow);
+        chatWelcome.style.display = 'block';
+      }).catch(console.error);
     }
 
     // ── File handling ─────────────────────────────────────────────────────────
@@ -715,6 +769,7 @@
         isSending = false;
         sendBtn.disabled = false;
         inputEl.focus();
+        loadSidebarHistory(); // Refresh sidebar to show any newly created conversations
       }
     }
 

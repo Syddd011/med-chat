@@ -70,10 +70,19 @@ if SENTRY_DSN:
     )
 
 # ── Logging ───────────────────────────────────────────────────────────────────
+import sys
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8')
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[logging.FileHandler("flask.log"), logging.StreamHandler()]
+    handlers=[
+        logging.FileHandler("flask.log", encoding="utf-8"),
+        logging.StreamHandler(sys.stdout)
+    ]
 )
 logger = logging.getLogger(__name__)
 
@@ -538,6 +547,40 @@ def export_data():
         flash("Export failed. Please try again later.", "error")
         return redirect(url_for("index"))
 
+
+# ── Chat History API ──────────────────────────────────────────────────────────
+
+@app.route("/api/conversations", methods=["GET"])
+@login_required
+def api_conversations():
+    convs = Conversation.query.filter_by(user_id=current_user.id).order_by(Conversation.started_at.desc()).all()
+    res = []
+    for c in convs:
+        first_msg = Message.query.filter_by(conversation_id=c.id).order_by(Message.created_at).first()
+        title = first_msg.content[:40] + ("..." if len(first_msg.content) > 40 else "") if first_msg else "New Chat"
+        res.append({
+            "id": c.id,
+            "started_at": c.started_at.isoformat() if c.started_at else None,
+            "title": title
+        })
+    return jsonify(res)
+
+@app.route("/api/conversations/<conv_id>", methods=["GET"])
+@login_required
+def api_get_conversation(conv_id):
+    conv = db.session.get(Conversation, conv_id)
+    if not conv or conv.user_id != current_user.id:
+        return jsonify({"error": "Not found"}), 404
+        
+    session["conv_id"] = conv.id
+    msgs = Message.query.filter_by(conversation_id=conv.id).order_by(Message.created_at).all()
+    return jsonify([m.to_dict() for m in msgs])
+
+@app.route("/api/conversations/new", methods=["POST"])
+@login_required
+def api_new_conversation():
+    session.pop("conv_id", None)
+    return jsonify({"status": "ok"})
 
 # ── Chat Route ────────────────────────────────────────────────────────────────
 

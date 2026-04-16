@@ -21,14 +21,10 @@ def upgrade():
     with op.batch_alter_table('conversations', schema=None) as batch_op:
         batch_op.add_column(sa.Column('last_active_at', sa.DateTime(timezone=True), nullable=True))
         batch_op.create_index(batch_op.f('ix_conversations_user_id'), ['user_id'], unique=False)
-        batch_op.drop_constraint(None, type_='foreignkey')
-        batch_op.create_foreign_key(None, 'users', ['user_id'], ['id'], ondelete='CASCADE')
 
     with op.batch_alter_table('messages', schema=None) as batch_op:
         batch_op.create_index('ix_messages_conv_created', ['conversation_id', 'created_at'], unique=False)
         batch_op.create_index('ix_messages_role_intent', ['role', 'intent'], unique=False)
-        batch_op.drop_constraint(None, type_='foreignkey')
-        batch_op.create_foreign_key(None, 'conversations', ['conversation_id'], ['id'], ondelete='CASCADE')
 
     with op.batch_alter_table('users', schema=None) as batch_op:
         batch_op.add_column(sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True))
