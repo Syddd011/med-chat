@@ -1,4 +1,4 @@
-# MediBot 🩺 — AI Medical Information Assistant
+# MediBot 🩺  AI Medical Information Assistant
 
 [![Python](https://img.shields.io/badge/Python-3.10-3776ab?style=flat&logo=python&logoColor=white)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-3.0-black?style=flat&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
